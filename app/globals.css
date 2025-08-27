@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables for the Finance360 theme */
+:root {
+    /* Finance360 Brand Colors */
+    
+    /* Primary Brand Palette */
+    --primary-navy: 10 22 40; /* #0A1628 - Deep navy */
+    --primary-navy-light: 30 58 95; /* #1E3A5F - Light navy */
+    --primary-cyan: 0 217 255; /* #00D9FF - Bright cyan */
+    --primary-cyan-dark: 0 184 230; /* #00B8E6 - Dark cyan */
+    
+    /* Secondary Palette */
+    --secondary-purple: 123 63 242; /* #7B3FF2 - Purple */
+    --secondary-purple-light: 157 78 221; /* #9D4EDD - Light purple */
+    --secondary-magenta: 233 79 138; /* #E94F8A - Magenta */
+    --secondary-orange: 255 107 53; /* #FF6B35 - Orange */
+    
+    /* Legacy primary (for gradual migration) */
+    --primary: 0 217 255; /* Now cyan */
+    --primary-dark: 0 184 230;
+    --primary-light: 51 229 255;
+    
+    /* Background colors */
+    --background: 255 255 255; /* White */
+    --background-secondary: 249 250 251; /* Light gray */
+    --background-dark: 10 22 40; /* Navy */
+    
+    /* Text colors */
+    --text-primary: 17 24 39; /* Dark gray */
+    --text-secondary: 107 114 128; /* Medium gray */
+    --text-muted: 156 163 175; /* Light gray */
+    --text-inverse: 255 255 255; /* White */
+    
+    /* Semantic colors (updated to brand) */
+    --accent-green: 0 217 255; /* Now cyan for success */
+    --accent-red: 233 79 138; /* Now magenta for errors */
+    --accent-yellow: 255 107 53; /* Now orange for warnings */
+    
+    /* Border color */
+    --border: 229 231 235; /* Light gray */
+    --border-cyan: 0 217 255; /* Cyan border */
+    
+    /* Effects */
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --glow-cyan: 0 0 20px rgba(0, 217, 255, 0.5);
+    --glow-purple: 0 0 20px rgba(123, 63, 242, 0.5);
+}
+
+/* Global styles */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: rgb(var(--background));
+    color: rgb(var(--text-primary));
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utility classes for Finance360 theme */
+@layer utilities {
+
+    /* Text colors */
+    .text-primary {
+        color: rgb(var(--primary));
+    }
+
+    /* Background colors */
+    .bg-primary {
+        background-color: rgb(var(--primary));
+    }
+
+    .bg-dark {
+        background-color: rgb(var(--background-dark));
+    }
+
+    /* Professional card style */
+    .card {
+        @apply bg-white rounded-lg shadow-sm border border-gray-100 transition-shadow hover:shadow-md;
+    }
+
+    /* Clean button styles */
+    .btn-primary {
+        @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors;
+    }
+
+    .btn-secondary {
+        @apply bg-gray-100 hover:bg-gray-200 text-gray-900 font-medium py-2 px-4 rounded-md transition-colors;
+    }
+
+    .btn-ghost {
+        @apply hover:bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors;
+    }
+
+    /* Minimal input style */
+    .input {
+        @apply border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors;
+    }
+
+    /* Clean metric card */
+    .metric-card {
+        @apply bg-white p-6 rounded-lg border border-gray-100 hover:shadow-sm transition-all;
+    }
+
+    /* Professional gradient text */
+    .gradient-text {
+        @apply bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent;
+    }
+}
+
+/* Remove excessive animations and color transitions */
+* {
+    transition-duration: 150ms;
+}
+
+/* Scrollbar styling for professional look */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgb(var(--background-secondary));
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(var(--text-muted));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--text-secondary));
+}
+
+/* Hide scrollbar for specific elements */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Finance360 Brand Utility Classes */
+.bg-navy {
+    background: rgb(var(--primary-navy));
+}
+
+.bg-navy-gradient {
+    background: linear-gradient(135deg, rgb(var(--primary-navy)) 0%, rgb(var(--primary-navy-light)) 100%);
+}
+
+.bg-cyan-gradient {
+    background: linear-gradient(135deg, rgb(var(--primary-cyan)) 0%, rgb(var(--primary-cyan-dark)) 100%);
+}
+
+.text-cyan {
+    color: rgb(var(--primary-cyan));
+}
+
+.text-purple {
+    color: rgb(var(--secondary-purple));
+}
+
+.text-magenta {
+    color: rgb(var(--secondary-magenta));
+}
+
+.border-cyan {
+    border-color: rgba(var(--primary-cyan) / 0.2);
+}
+
+.glow-cyan {
+    box-shadow: var(--glow-cyan);
+}
+
+.glow-cyan-hover:hover {
+    box-shadow: var(--glow-cyan);
+}
+
+.glow-purple {
+    box-shadow: var(--glow-purple);
+}
+
+/* Additional utility classes for components */
+.text-navy-900 {
+    color: rgb(var(--primary-navy));
+}
+
+.border-cyan-500 {
+    border-color: rgb(var(--primary-cyan));
+}
+
+.bg-cyan-50 {
+    background-color: rgba(var(--primary-cyan) / 0.05);
+}
+
+/* Animation delays for login page */
+.delay-100 {
+    animation-delay: 100ms;
+}
+
+.delay-200 {
+    animation-delay: 200ms;
+}
+
+.delay-300 {
+    animation-delay: 300ms;
+}
