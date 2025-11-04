@@ -21,7 +21,7 @@ export default function LoginPage() {
         // Simulate login delay
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        if (username === 'GMFinance' && password === 'Seethefuture') {
+        if (username === 'ACNFinance' && password === 'Seethefuture') {
             // Set authentication cookie
             document.cookie = 'isAuthenticated=true; path=/; max-age=86400'; // 24 hours
             // Set flag to show disclaimer after login
