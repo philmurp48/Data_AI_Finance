@@ -2,31 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CSS Variables for the Finance360 theme */
+/* CSS Variables for Finance360 - Accenture Branding */
 :root {
-    /* Finance360 Brand Colors */
+    /* Accenture Brand Colors */
     
-    /* Primary Brand Palette */
-    --primary-navy: 10 22 40; /* #0A1628 - Deep navy */
-    --primary-navy-light: 30 58 95; /* #1E3A5F - Light navy */
-    --primary-cyan: 0 217 255; /* #00D9FF - Bright cyan */
-    --primary-cyan-dark: 0 184 230; /* #00B8E6 - Dark cyan */
+    /* Primary Brand Palette - Accenture Purple */
+    --primary-navy: 15 23 42; /* #0f172a - Dark slate (Accenture) */
+    --primary-navy-light: 30 41 59; /* #1e293b - Light slate */
+    --primary-purple: 139 92 246; /* #8b5cf6 - Accenture Purple */
+    --primary-purple-dark: 124 58 237; /* #7c3aed - Dark purple */
+    --primary-purple-light: 167 139 250; /* #a78bfa - Light purple */
     
-    /* Secondary Palette */
-    --secondary-purple: 123 63 242; /* #7B3FF2 - Purple */
-    --secondary-purple-light: 157 78 221; /* #9D4EDD - Light purple */
-    --secondary-magenta: 233 79 138; /* #E94F8A - Magenta */
-    --secondary-orange: 255 107 53; /* #FF6B35 - Orange */
+    /* Secondary Palette - Accenture Colors */
+    --secondary-purple: 139 92 246; /* #8b5cf6 - Accenture Purple */
+    --secondary-purple-light: 167 139 250; /* #a78bfa - Light purple */
+    --secondary-blue: 59 130 246; /* #3b82f6 - Accenture Blue */
+    --secondary-success: 16 185 129; /* #10b981 - Success green */
+    --secondary-warning: 245 158 11; /* #f59e0b - Warning amber */
+    --secondary-danger: 239 68 68; /* #ef4444 - Danger red */
     
     /* Legacy primary (for gradual migration) */
-    --primary: 0 217 255; /* Now cyan */
-    --primary-dark: 0 184 230;
-    --primary-light: 51 229 255;
+    --primary: 139 92 246; /* Accenture Purple */
+    --primary-dark: 124 58 237;
+    --primary-light: 167 139 250;
     
     /* Background colors */
     --background: 255 255 255; /* White */
     --background-secondary: 249 250 251; /* Light gray */
-    --background-dark: 10 22 40; /* Navy */
+    --background-dark: 15 23 42; /* Dark slate (Accenture) */
     
     /* Text colors */
     --text-primary: 17 24 39; /* Dark gray */
@@ -34,19 +37,19 @@
     --text-muted: 156 163 175; /* Light gray */
     --text-inverse: 255 255 255; /* White */
     
-    /* Semantic colors (updated to brand) */
-    --accent-green: 0 217 255; /* Now cyan for success */
-    --accent-red: 233 79 138; /* Now magenta for errors */
-    --accent-yellow: 255 107 53; /* Now orange for warnings */
+    /* Semantic colors - Accenture palette */
+    --accent-green: 16 185 129; /* #10b981 - Success green */
+    --accent-red: 239 68 68; /* #ef4444 - Danger red */
+    --accent-yellow: 245 158 11; /* #f59e0b - Warning amber */
     
     /* Border color */
     --border: 229 231 235; /* Light gray */
-    --border-cyan: 0 217 255; /* Cyan border */
+    --border-purple: 139 92 246; /* Accenture Purple border */
     
     /* Effects */
     --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    --glow-cyan: 0 0 20px rgba(0, 217, 255, 0.5);
-    --glow-purple: 0 0 20px rgba(123, 63, 242, 0.5);
+    --glow-purple: 0 0 20px rgba(139, 92, 246, 0.5);
+    --glow-purple-intense: 0 0 40px rgba(139, 92, 246, 0.8);
 }
 
 /* Global styles */
@@ -143,7 +146,7 @@ body {
     display: none;  /* Chrome, Safari and Opera */
 }
 
-/* Finance360 Brand Utility Classes */
+/* Finance360 Brand Utility Classes - Accenture Branding */
 .bg-navy {
     background: rgb(var(--primary-navy));
 }
@@ -153,11 +156,17 @@ body {
 }
 
 .bg-cyan-gradient {
-    background: linear-gradient(135deg, rgb(var(--primary-cyan)) 0%, rgb(var(--primary-cyan-dark)) 100%);
+    /* Legacy class - now uses Accenture Purple */
+    background: linear-gradient(135deg, rgb(var(--primary-purple)) 0%, rgb(var(--primary-purple-dark)) 100%);
+}
+
+.bg-purple-gradient {
+    background: linear-gradient(135deg, rgb(var(--primary-purple)) 0%, rgb(var(--primary-purple-dark)) 100%);
 }
 
 .text-cyan {
-    color: rgb(var(--primary-cyan));
+    /* Legacy class - now uses Accenture Purple */
+    color: rgb(var(--primary-purple));
 }
 
 .text-purple {
@@ -165,23 +174,33 @@ body {
 }
 
 .text-magenta {
-    color: rgb(var(--secondary-magenta));
+    color: rgb(var(--secondary-danger));
 }
 
 .border-cyan {
-    border-color: rgba(var(--primary-cyan) / 0.2);
+    /* Legacy class - now uses Accenture Purple */
+    border-color: rgba(var(--primary-purple) / 0.2);
+}
+
+.border-purple {
+    border-color: rgba(var(--primary-purple) / 0.2);
 }
 
 .glow-cyan {
-    box-shadow: var(--glow-cyan);
+    /* Legacy class - now uses Accenture Purple */
+    box-shadow: var(--glow-purple);
 }
 
 .glow-cyan-hover:hover {
-    box-shadow: var(--glow-cyan);
+    box-shadow: var(--glow-purple);
 }
 
 .glow-purple {
     box-shadow: var(--glow-purple);
+}
+
+.glow-purple-intense {
+    box-shadow: var(--glow-purple-intense);
 }
 
 /* Additional utility classes for components */
@@ -190,11 +209,21 @@ body {
 }
 
 .border-cyan-500 {
-    border-color: rgb(var(--primary-cyan));
+    /* Legacy class - now uses Accenture Purple */
+    border-color: rgb(var(--primary-purple));
+}
+
+.border-purple-500 {
+    border-color: rgb(var(--primary-purple));
 }
 
 .bg-cyan-50 {
-    background-color: rgba(var(--primary-cyan) / 0.05);
+    /* Legacy class - now uses Accenture Purple */
+    background-color: rgba(var(--primary-purple) / 0.05);
+}
+
+.bg-purple-50 {
+    background-color: rgba(var(--primary-purple) / 0.05);
 }
 
 /* Animation delays for login page */

@@ -33,7 +33,7 @@ interface ExecutiveSummaryProps {
 
 export default function ExecutiveSummary({ filters }: ExecutiveSummaryProps) {
     const {
-        selectedRegion = 'GMNA',
+        selectedRegion = 'North America',
         selectedDivision = 'All',
         selectedPeriod = 'Q',
         selectedComparison = 'YoY',
@@ -160,7 +160,7 @@ export default function ExecutiveSummary({ filters }: ExecutiveSummaryProps) {
             priority: 'high',
             urgency: 'immediate',
             title: 'EV Market Expansion Opportunity',
-            insight: 'EV segment showing 35% YoY growth with GM market share at only 12%',
+            insight: 'EV segment showing 35% YoY growth with current market share at only 12%',
             impact: '+2.5pp market share potential',
             proposedAction: 'Increase EV inventory allocation by 40% in high-growth metros: California, Texas, Florida. Launch targeted digital campaigns for eco-conscious buyers.',
             drivers: ['Product Mix', 'Inventory', 'Marketing Strategy']
@@ -184,7 +184,7 @@ export default function ExecutiveSummary({ filters }: ExecutiveSummaryProps) {
             title: 'Competitor Recall Impact',
             insight: 'Major competitor recalling 50K vehicles in luxury SUV segment',
             impact: '+0.8pp share opportunity',
-            proposedAction: 'Launch conquest campaign targeting affected customers with special trade-in offers and emphasize GM quality/reliability messaging.',
+            proposedAction: 'Launch conquest campaign targeting affected customers with special trade-in offers and emphasize quality/reliability messaging.',
             drivers: ['Competitive Strategy', 'Marketing', 'Incentives']
         }
     ];
@@ -219,7 +219,7 @@ export default function ExecutiveSummary({ filters }: ExecutiveSummaryProps) {
                     stroke="currentColor"
                     strokeWidth="2"
                     points={points}
-                    className="text-cyan-500"
+                    className="text-purple-500"
                 />
             </svg>
         );
@@ -365,7 +365,7 @@ export default function ExecutiveSummary({ filters }: ExecutiveSummaryProps) {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <div className="mb-6">
                     <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                        <Target className="w-5 h-5 mr-2 text-cyan-600" />
+                        <Target className="w-5 h-5 mr-2 text-purple-600" />
                         Market Share can be influenced through these areas:
                     </h3>
                     <p className="text-sm text-gray-600 mt-1">
@@ -533,7 +533,7 @@ export default function ExecutiveSummary({ filters }: ExecutiveSummaryProps) {
                                         <p className="text-xs text-gray-700">{opp.drivers.join(', ')}</p>
                                     </div>
                                 </div>
-                                <button className="px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm font-medium hover:bg-cyan-700 transition-colors flex items-center">
+                                <button className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors flex items-center">
                                     Take Action
                                     <ArrowUpRight className="w-4 h-4 ml-1" />
                                 </button>

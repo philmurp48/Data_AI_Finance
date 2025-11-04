@@ -30,7 +30,7 @@ const tabs = [
 
 export default function MarketDemandPage() {
     const [activeTab, setActiveTab] = useState('executive-summary');
-    const [selectedRegion, setSelectedRegion] = useState('GMNA');
+    const [selectedRegion, setSelectedRegion] = useState('North America');
     const [selectedSite, setSelectedSite] = useState('All');
     const [selectedDivision, setSelectedDivision] = useState('All');
     const [selectedNameplate, setSelectedNameplate] = useState('All');
@@ -79,8 +79,8 @@ export default function MarketDemandPage() {
                     <div className="py-6">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
-                                <div className="p-3 bg-cyan-gradient rounded-xl shadow-lg shadow-cyan-500/20">
-                                    <TrendingUp className="w-8 h-8 text-navy-900" />
+                                <div className="p-3 bg-purple-gradient rounded-xl shadow-lg shadow-purple-500/20">
+                                    <TrendingUp className="w-8 h-8 text-white" />
                                 </div>
                                 <div>
                                     <h1 className="text-2xl font-bold text-navy-900">Market & Demand Intelligence</h1>
@@ -109,10 +109,10 @@ export default function MarketDemandPage() {
                             <select
                                 value={selectedRegion}
                                 onChange={(e) => setSelectedRegion(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
-                                <option value="GMNA">GMNA</option>
-                                <option value="GMI">GMI</option>
+                                <option value="North America">North America</option>
+                                <option value="International">International</option>
                                 <option value="China">China</option>
                                 <option value="Global">Global</option>
                             </select>
@@ -120,7 +120,7 @@ export default function MarketDemandPage() {
                             <select
                                 value={selectedSite}
                                 onChange={(e) => setSelectedSite(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="All">All Sites</option>
                                 <option value="Arlington">Arlington</option>
@@ -133,7 +133,7 @@ export default function MarketDemandPage() {
                             <select
                                 value={selectedDivision}
                                 onChange={(e) => setSelectedDivision(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="All">All Divisions</option>
                                 <option value="Chevrolet">Chevrolet</option>
@@ -145,7 +145,7 @@ export default function MarketDemandPage() {
                             <select
                                 value={selectedNameplate}
                                 onChange={(e) => setSelectedNameplate(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="All">All</option>
                                 <option value="Escalade">Escalade</option>
@@ -158,7 +158,7 @@ export default function MarketDemandPage() {
                             <select
                                 value={selectedFunction}
                                 onChange={(e) => setSelectedFunction(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="All">All</option>
                                 <option value="Mfg">Mfg.</option>
@@ -197,7 +197,7 @@ export default function MarketDemandPage() {
                             <select
                                 value={selectedComparison}
                                 onChange={(e) => setSelectedComparison(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="YoY">vs Last Year</option>
                                 <option value="QoQ">vs Last Quarter</option>
@@ -212,7 +212,7 @@ export default function MarketDemandPage() {
                             <select
                                 value={selectedTimeToggle}
                                 onChange={(e) => setSelectedTimeToggle(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="M/Q/Y">M/Q/Y</option>
                                 <option value="J1/1210/1240">J1/1210/1240</option>
@@ -221,7 +221,7 @@ export default function MarketDemandPage() {
                             <select
                                 value={selectedValueView}
                                 onChange={(e) => setSelectedValueView(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="Total $">Total $</option>
                                 <option value="By Unit">By Unit</option>
@@ -254,7 +254,7 @@ export default function MarketDemandPage() {
                                     className={`
                                         flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors
                                         ${activeTab === tab.id
-                                            ? 'border-cyan-500 text-cyan-600'
+                                            ? 'border-purple-500 text-purple-600'
                                             : 'border-transparent text-gray-500 hover:text-navy-900 hover:border-gray-300'
                                         }
                                     `}

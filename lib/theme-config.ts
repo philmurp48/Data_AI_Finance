@@ -1,23 +1,26 @@
 // Theme Configuration for Management Reporting Platform
-// Finance360-inspired professional theme with minimal colors
+// Accenture-branded professional theme with Accenture Purple
 
 export const themeConfig = {
     colors: {
-        // Primary brand colors
+        // Primary brand colors - Accenture Purple
         primary: {
-            navy: '#0A1628',      // Deep navy background
-            navyLight: '#1E3A5F', // Lighter navy for gradients
-            cyan: '#00D9FF',      // Bright cyan accent
-            cyanDark: '#00B8E6',  // Darker cyan for hover states
-            cyanGlow: 'rgba(0, 217, 255, 0.4)', // Cyan glow effect
+            navy: '#0f172a',      // Dark slate background (from Accenture tokens)
+            navyLight: '#1e293b', // Lighter slate for gradients
+            purple: '#8b5cf6',   // Accenture Purple primary
+            purpleDark: '#7c3aed', // Darker purple for hover states
+            purpleLight: '#a78bfa', // Light purple for accents
+            purpleGlow: 'rgba(139, 92, 246, 0.4)', // Purple glow effect
         },
 
-        // Secondary colors
+        // Secondary colors - Accenture palette
         secondary: {
-            purple: '#7B3FF2',    // Purple for charts/data
-            purpleLight: '#9D4EDD', // Light purple for gradients
-            magenta: '#E94F8A',   // Magenta for negative indicators
-            orange: '#FF6B35',    // Orange for warnings
+            purple: '#8b5cf6',    // Accenture Purple for charts/data
+            purpleLight: '#a78bfa', // Light purple for gradients
+            blue: '#3b82f6',       // Accenture Blue
+            success: '#10b981',    // Success green
+            warning: '#f59e0b',    // Warning amber
+            danger: '#ef4444',     // Danger red
         },
 
         // Neutral colors
@@ -36,21 +39,21 @@ export const themeConfig = {
             black: '#000000',
         },
 
-        // Semantic colors
+        // Semantic colors - Accenture palette
         semantic: {
-            success: '#00D9FF',   // Using cyan instead of green
-            warning: '#FF6B35',   // Orange
-            error: '#E94F8A',     // Magenta instead of red
-            info: '#7B3FF2',      // Purple
+            success: '#10b981',   // Accenture Success green
+            warning: '#f59e0b',   // Accenture Warning amber
+            error: '#ef4444',     // Accenture Danger red
+            info: '#3b82f6',      // Accenture Info blue
         },
 
         // Background colors
         background: {
             primary: '#FFFFFF',
             secondary: '#F9FAFB',
-            dark: '#0A1628',      // Navy background
-            gradient: 'linear-gradient(135deg, #0A1628 0%, #1E3A5F 100%)',
-            cardDark: 'linear-gradient(135deg, #0A1628 0%, #1A2B44 100%)',
+            dark: '#0f172a',      // Dark slate background (Accenture)
+            gradient: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+            cardDark: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
         },
 
         // Text colors
@@ -59,25 +62,25 @@ export const themeConfig = {
             secondary: '#6B7280',
             muted: '#9CA3AF',
             inverse: '#FFFFFF',   // White text for dark backgrounds
-            cyan: '#00D9FF',
+            purple: '#8b5cf6',    // Accenture Purple
         },
     },
 
-    // Gradient definitions
+    // Gradient definitions - Accenture Purple gradients
     gradients: {
-        navyBlue: 'linear-gradient(135deg, #0A1628 0%, #1E3A5F 100%)',
-        cyanGlow: 'linear-gradient(135deg, #00D9FF 0%, #00B8E6 100%)',
-        purplePink: 'linear-gradient(135deg, #7B3FF2 0%, #E94F8A 100%)',
-        darkCard: 'linear-gradient(135deg, #0A1628 0%, #1A2B44 100%)',
+        navyBlue: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+        purpleGlow: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+        purpleBlue: 'linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)',
+        darkCard: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
     },
 
-    // Shadow and glow effects
+    // Shadow and glow effects - Accenture Purple
     effects: {
-        cyanGlow: '0 0 20px rgba(0, 217, 255, 0.5)',
-        cyanGlowIntense: '0 0 40px rgba(0, 217, 255, 0.8)',
-        purpleGlow: '0 0 20px rgba(123, 63, 242, 0.5)',
+        purpleGlow: '0 0 20px rgba(139, 92, 246, 0.5)',
+        purpleGlowIntense: '0 0 40px rgba(139, 92, 246, 0.8)',
+        purpleShadow: '0 0 20px rgba(139, 92, 246, 0.3)',
         cardShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        cardShadowHover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        cardShadowHover: '0 10px 15px -3px rgba(139, 92, 246, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
     },
 
     typography: {
@@ -120,17 +123,17 @@ export const themeConfig = {
     components: {
         button: {
             primary: {
-                background: 'linear-gradient(135deg, #00D9FF 0%, #00B8E6 100%)',
-                color: '#0A1628',
-                hoverBackground: 'linear-gradient(135deg, #00B8E6 0%, #0099CC 100%)',
-                boxShadow: '0 0 20px rgba(0, 217, 255, 0.3)',
-                hoverBoxShadow: '0 0 30px rgba(0, 217, 255, 0.5)',
+                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+                color: '#FFFFFF',
+                hoverBackground: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)',
+                boxShadow: '0 4px 6px -1px rgba(139, 92, 246, 0.3), 0 2px 4px -1px rgba(139, 92, 246, 0.2)',
+                hoverBoxShadow: '0 10px 15px -3px rgba(139, 92, 246, 0.4), 0 4px 6px -2px rgba(139, 92, 246, 0.3)',
             },
             secondary: {
-                background: 'rgba(123, 63, 242, 0.1)',
-                color: '#7B3FF2',
-                border: '1px solid #7B3FF2',
-                hoverBackground: 'rgba(123, 63, 242, 0.2)',
+                background: 'rgba(139, 92, 246, 0.1)',
+                color: '#8b5cf6',
+                border: '1px solid #8b5cf6',
+                hoverBackground: 'rgba(139, 92, 246, 0.2)',
             },
         },
         card: {
@@ -139,8 +142,8 @@ export const themeConfig = {
                 border: '1px solid #E5E7EB',
             },
             dark: {
-                background: 'linear-gradient(135deg, #0A1628 0%, #1A2B44 100%)',
-                border: '1px solid rgba(0, 217, 255, 0.2)',
+                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+                border: '1px solid rgba(139, 92, 246, 0.2)',
                 color: '#FFFFFF',
             },
         },
@@ -150,8 +153,8 @@ export const themeConfig = {
 // Helper function to get CSS variables from theme
 export function getThemeCSSVariables() {
     return {
-        '--color-primary': themeConfig.colors.primary.cyan,
-        '--color-secondary': themeConfig.colors.secondary.purple,
+        '--color-primary': themeConfig.colors.primary.purple,
+        '--color-secondary': themeConfig.colors.secondary.blue,
         '--color-success': themeConfig.colors.semantic.success,
         '--color-warning': themeConfig.colors.semantic.warning,
         '--color-error': themeConfig.colors.semantic.error,

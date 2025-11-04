@@ -72,25 +72,25 @@ export default function BusinessNarrative() {
                 weaknesses: [
                     "Limited presence in entry-level segment",
                     "Higher price point vs new competitors",
-                    "Slower digital transformation vs Tesla",
+                    "Slower digital transformation vs new market entrants",
                     "Dependency on traditional dealer model"
                 ]
             },
             competitorMoves: [
                 {
-                    competitor: "Tesla",
+                    competitor: "Competitor A",
                     recentAction: "Launched $35K Model 2",
                     marketImpact: "Capturing price-sensitive EV buyers",
                     ourResponse: "Accelerate affordable EV development"
                 },
                 {
-                    competitor: "BYD",
+                    competitor: "Competitor B",
                     recentAction: "Entered North American market",
                     marketImpact: "Aggressive pricing in mid-tier",
                     ourResponse: "Value engineering initiative"
                 },
                 {
-                    competitor: "Traditional OEMs",
+                    competitor: "Traditional Manufacturers",
                     recentAction: "Joint EV platform development",
                     marketImpact: "Faster EV launches expected",
                     ourResponse: "Strengthen tech partnerships"
@@ -232,28 +232,28 @@ export default function BusinessNarrative() {
                 "EV charging anxiety - Despite network investments, perception lags reality"
             ],
             competitiveIntel: [
-                "Tesla planning major price cuts Q1 - insider info from supplier",
-                "Chinese OEMs targeting our profitable fleet segment with loss-leader pricing",
-                "Traditional competitors forming alliance on charging infrastructure",
+                "Competitor A planning major price cuts Q1 - insider info from supplier",
+                "New market entrants targeting our profitable fleet segment with loss-leader pricing",
+                "Traditional competitors forming alliance on infrastructure",
                 "New entrant hiring our entire Phoenix engineering team"
             ],
             competitorMoves: [
                 {
-                    competitor: "Tesla",
+                    competitor: "Competitor A",
                     recentAction: "Opening Supercharger network",
                     marketImpact: "Removes our charging advantage",
                     ourResponse: "Accelerate proprietary charging tech",
                     insiderContext: "Their charging revenue model is failing - they need our volume"
                 },
                 {
-                    competitor: "BYD",
+                    competitor: "Competitor B",
                     recentAction: "Building US factories",
                     marketImpact: "Cost advantage from local production",
                     ourResponse: "Lobbying for stricter safety standards",
                     insiderContext: "Their quality issues in China being suppressed - opportunity for PR campaign"
                 },
                 {
-                    competitor: "Traditional OEMs",
+                    competitor: "Traditional Manufacturers",
                     recentAction: "Massive EV investments",
                     marketImpact: "Catching up on technology",
                     ourResponse: "Focus on software differentiation",

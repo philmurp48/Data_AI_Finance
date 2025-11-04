@@ -110,7 +110,7 @@ export default function ManagementReportingLayout({
                         {/* Menu Toggle Button */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className={`p-2 rounded-lg hover:bg-white/10 transition-all ${shouldPulse && !isMenuOpen ? 'animate-pulse bg-cyan-500/20' : ''
+                            className={`p-2 rounded-lg hover:bg-white/10 transition-all ${shouldPulse && !isMenuOpen ? 'animate-pulse bg-purple-500/20' : ''
                                 }`}
                             aria-label="Toggle menu"
                         >
@@ -136,10 +136,10 @@ export default function ManagementReportingLayout({
                                     <input
                                         type="text"
                                         placeholder="Ask me anything about your business..."
-                                        className="w-full pl-12 pr-4 py-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-l-full text-sm text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                                        className="w-full pl-12 pr-4 py-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-l-full text-sm text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     />
                                 </div>
-                                <button className="px-8 py-2.5 bg-cyan-gradient text-navy font-medium rounded-r-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all text-sm whitespace-nowrap border border-cyan-500">
+                                <button className="px-8 py-2.5 bg-purple-gradient text-white font-medium rounded-r-full hover:shadow-lg hover:shadow-purple-500/50 transition-all text-sm whitespace-nowrap border border-purple-500">
                                     AI Search
                                 </button>
                             </div>
@@ -154,7 +154,7 @@ export default function ManagementReportingLayout({
                                     <p className="text-sm font-medium text-white">Sarah Johnson</p>
                                     <p className="text-xs text-gray-300">Finance Executive</p>
                                 </div>
-                                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-cyan-500/50">
+                                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-500/50">
                                     <img
                                         src="/images/Sarah-Johnson-Finance-Executive-headshot.png"
                                         alt="Sarah Johnson"
@@ -213,16 +213,16 @@ export default function ManagementReportingLayout({
                                                 href={item.href}
                                                 onClick={() => setIsMenuOpen(false)}
                                                 className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${isActive
-                                                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-500/20'
+                                                    ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30 shadow-lg shadow-purple-500/20'
                                                     : 'text-gray-300 hover:bg-white/10 hover:text-white'
                                                     }`}
                                             >
-                                                <Icon className={`w-5 h-5 ${isActive ? 'text-cyan-400' : ''}`} />
+                                                <Icon className={`w-5 h-5 ${isActive ? 'text-purple-400' : ''}`} />
                                                 <span className="font-medium">{item.title}</span>
                                                 {isActive && (
                                                     <motion.div
                                                         layoutId="activeIndicator"
-                                                        className="absolute left-0 w-1 h-8 bg-cyan-400 rounded-r-full"
+                                                        className="absolute left-0 w-1 h-8 bg-purple-400 rounded-r-full"
                                                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                                     />
                                                 )}
@@ -235,7 +235,7 @@ export default function ManagementReportingLayout({
                             {/* User Section - Simplified */}
                             <div className="mb-6 p-4 bg-black/20 rounded-lg mx-4">
                                 <div className="flex items-center space-x-3 mb-2">
-                                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-cyan-500/50">
+                                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-500/50">
                                         <img
                                             src="/images/Sarah-Johnson-Finance-Executive-headshot.png"
                                             alt="Sarah Johnson"

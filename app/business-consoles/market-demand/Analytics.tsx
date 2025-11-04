@@ -56,7 +56,7 @@ export default function Analytics() {
 
     // Competitive analysis data
     const competitiveData = [
-        { competitor: 'GM', share: 18.5, change: 0.8, segments: { ev: 12, suv: 22, sedan: 15, truck: 28 } },
+        { competitor: 'Company A', share: 18.5, change: 0.8, segments: { ev: 12, suv: 22, sedan: 15, truck: 28 } },
         { competitor: 'Competitor A', share: 22.3, change: -0.5, segments: { ev: 18, suv: 25, sedan: 20, truck: 24 } },
         { competitor: 'Competitor B', share: 19.8, change: 0.2, segments: { ev: 15, suv: 20, sedan: 22, truck: 18 } },
         { competitor: 'Competitor C', share: 15.2, change: -1.2, segments: { ev: 8, suv: 18, sedan: 16, truck: 14 } },
@@ -92,7 +92,7 @@ export default function Analytics() {
                             <select
                                 value={selectedMetric}
                                 onChange={(e) => setSelectedMetric(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="marketShare">Market Share</option>
                                 <option value="segmentGrowth">Segment Growth</option>
@@ -103,7 +103,7 @@ export default function Analytics() {
                             <select
                                 value={selectedView}
                                 onChange={(e) => setSelectedView(e.target.value)}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                                 <option value="trend">Trend Analysis</option>
                                 <option value="drivers">Driver Contribution</option>
@@ -254,7 +254,7 @@ export default function Analytics() {
                 >
                     <div className="flex items-center justify-between mb-4">
                         <h4 className="font-semibold text-gray-900">Competitive Market Share</h4>
-                        <button className="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
+                        <button className="text-sm text-purple-600 hover:text-purple-700 font-medium">
                             View Details →
                         </button>
                     </div>
@@ -263,7 +263,7 @@ export default function Analytics() {
                         {competitiveData.map((comp) => (
                             <div key={comp.competitor} className="relative">
                                 <div className="flex items-center justify-between mb-1">
-                                    <span className={`text-sm font-medium ${comp.competitor === 'GM' ? 'text-cyan-700' : 'text-gray-700'
+                                    <span className={`text-sm font-medium ${comp.competitor === 'Company A' ? 'text-purple-700' : 'text-gray-700'
                                         }`}>
                                         {comp.competitor}
                                     </span>
@@ -277,7 +277,7 @@ export default function Analytics() {
                                 </div>
                                 <div className="w-full bg-gray-200 rounded-full h-3">
                                     <div
-                                        className={`h-3 rounded-full transition-all ${comp.competitor === 'GM' ? 'bg-cyan-500' : 'bg-gray-400'
+                                        className={`h-3 rounded-full transition-all ${comp.competitor === 'Company A' ? 'bg-purple-500' : 'bg-gray-400'
                                             }`}
                                         style={{ width: `${comp.share}%` }}
                                     />
@@ -355,9 +355,9 @@ export default function Analytics() {
             </div>
 
             {/* Driver Insights Panel */}
-            <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl p-6 border border-cyan-200">
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-6 border border-purple-200">
                 <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
-                    <Layers className="w-5 h-5 mr-2 text-cyan-600" />
+                    <Layers className="w-5 h-5 mr-2 text-purple-600" />
                     Driver-Based Insights & Recommendations
                 </h4>
                 <div className="grid grid-cols-3 gap-4">

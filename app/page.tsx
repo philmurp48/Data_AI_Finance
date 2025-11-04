@@ -35,8 +35,8 @@ const personalizedInsights = [
         value: '-0.3%',
         priority: 'critical',
         icon: Globe,
-        bgColor: 'bg-cyan-50',
-        iconColor: 'text-cyan-700',
+        bgColor: 'bg-purple-50',
+        iconColor: 'text-purple-700',
         valueColor: 'text-red-600',
         action: 'View Details',
         category: 'Market',
@@ -468,7 +468,7 @@ export default function HomePage() {
         // Market share related queries
         if (lowerQuery.includes('market share') || lowerQuery.includes('losing share')) {
             return {
-                summary: "GM's market share has declined 0.3% to 18.2%, primarily due to new EV entrants capturing premium segments",
+                summary: "Market share has declined 0.3% to 18.2%, primarily due to new entrants capturing premium segments",
                 keyFindings: [
                     {
                         title: "Primary Driver: EV Competition",
@@ -520,10 +520,10 @@ export default function HomePage() {
                         type: 'pie',
                         title: 'Premium Segment Share Loss Attribution',
                         data: [
-                            { name: 'Tesla', value: 35, color: '#ef4444' },
-                            { name: 'Rivian', value: 25, color: '#f59e0b' },
-                            { name: 'Lucid', value: 20, color: '#eab308' },
-                            { name: 'Other EV', value: 20, color: '#84cc16' }
+                            { name: 'Competitor A', value: 35, color: '#ef4444' },
+                            { name: 'Competitor B', value: 25, color: '#f59e0b' },
+                            { name: 'Competitor C', value: 20, color: '#eab308' },
+                            { name: 'Other Entrants', value: 20, color: '#84cc16' }
                         ]
                     }
                 },
@@ -559,7 +559,7 @@ export default function HomePage() {
         // EV strategy queries
         else if (lowerQuery.includes('ev') || lowerQuery.includes('electric')) {
             return {
-                summary: "GM's EV penetration is at 42% versus 47% target, with strong growth in connected services but lagging in mid-range offerings",
+                summary: "EV penetration is at 42% versus 47% target, with strong growth in connected services but lagging in mid-range offerings",
                 keyFindings: [
                     {
                         title: "EV Mix Performance",
@@ -601,9 +601,9 @@ export default function HomePage() {
                         type: 'comparison',
                         title: 'Charging Network Access vs Competitors',
                         data: [
-                            { company: 'GM', stations: 65000, growth: '+12%' },
-                            { company: 'Tesla', stations: 120000, growth: '+18%' },
-                            { company: 'Ford', stations: 85000, growth: '+15%' },
+                            { company: 'Company A', stations: 65000, growth: '+12%' },
+                            { company: 'Company B', stations: 120000, growth: '+18%' },
+                            { company: 'Company C', stations: 85000, growth: '+15%' },
                             { company: 'Industry Avg', stations: 75000, growth: '+14%' }
                         ]
                     }
@@ -1273,7 +1273,7 @@ export default function HomePage() {
         // Competitive Intelligence queries
         else if (lowerQuery.includes('competitor') || lowerQuery.includes('competitive') || lowerQuery.includes('market position')) {
             return {
-                summary: "Maintaining #2 position in North America with share pressure from Tesla in EV and Toyota in hybrid segments",
+                summary: "Maintaining #2 position in North America with share pressure from new entrants in key segments",
                 keyFindings: [
                     {
                         title: "Competitive Position",
@@ -1282,7 +1282,7 @@ export default function HomePage() {
                     },
                     {
                         title: "EV Competition",
-                        detail: "Tesla commands 62% of EV segment, our share at 9% but growing",
+                        detail: "Market leader commands 62% of segment, our share at 9% but growing",
                         confidence: 92
                     },
                     {
@@ -1296,10 +1296,10 @@ export default function HomePage() {
                         type: 'radar',
                         title: 'Competitive Position by Segment',
                         data: [
-                            { segment: 'Full-Size Trucks', gm: 35, ford: 28, ram: 20, toyota: 12 },
-                            { segment: 'SUVs', gm: 22, toyota: 18, ford: 15, honda: 12 },
-                            { segment: 'EVs', tesla: 62, gm: 9, ford: 7, vw: 5 },
-                            { segment: 'Sedans', toyota: 24, honda: 20, gm: 12, nissan: 10 }
+                            { segment: 'Segment A', companyA: 35, companyB: 28, companyC: 20, companyD: 12 },
+                            { segment: 'Segment B', companyA: 22, companyB: 18, companyC: 15, companyD: 12 },
+                            { segment: 'Segment C', companyA: 62, companyB: 9, companyC: 7, companyD: 5 },
+                            { segment: 'Segment D', companyA: 24, companyB: 20, companyC: 12, companyD: 10 }
                         ]
                     }
                 },
@@ -1317,7 +1317,7 @@ export default function HomePage() {
                 ],
                 recommendations: [
                     "Defend truck/SUV fortress with aggressive innovation",
-                    "Accelerate EV launches to close Tesla gap",
+                    "Accelerate product launches to close competitive gap",
                     "Strategic withdrawal from commodity sedan segments",
                     "Leverage dealer advantage vs direct sales competitors"
                 ],
@@ -1413,7 +1413,7 @@ export default function HomePage() {
                     },
                     {
                         title: "Market Expansion",
-                        detail: "Honda partnership opening $1.5B commercial vehicle opportunity",
+                        detail: "Strategic partnership opening $1.5B commercial opportunity",
                         confidence: 89
                     }
                 ],
@@ -1423,7 +1423,7 @@ export default function HomePage() {
                         title: 'Partnership Portfolio Value',
                         data: [
                             { partner: 'LG Energy', value: 1200, type: 'JV', status: 'active' },
-                            { partner: 'Honda', value: 800, type: 'Alliance', status: 'active' },
+                            { partner: 'Strategic Partner A', value: 800, type: 'Alliance', status: 'active' },
                             { partner: 'Microsoft', value: 400, type: 'Technology', status: 'active' },
                             { partner: 'EVgo', value: 300, type: 'Infrastructure', status: 'active' },
                             { partner: 'Nikola', value: 100, type: 'Investment', status: 'exit' }
@@ -1791,7 +1791,7 @@ export default function HomePage() {
                         <button
                             onClick={handleAISearch}
                             disabled={isSearching || !searchQuery.trim()}
-                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-cyan-gradient text-navy-900 px-6 py-2 rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all border border-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-purple-gradient text-white px-6 py-2 rounded-full hover:shadow-lg hover:shadow-purple-500/50 transition-all border border-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isSearching ? (
                                 <div className="flex items-center space-x-2">
@@ -1821,7 +1821,7 @@ export default function HomePage() {
                                             setSearchQuery('Why is market share declining?');
                                             setTimeout(handleAISearch, 100);
                                         }}
-                                        className="text-xs text-cyan-600 hover:text-cyan-700 underline"
+                                        className="text-xs text-purple-600 hover:text-purple-700 underline"
                                     >
                                         "Why is market share declining?"
                                     </button>
@@ -1831,7 +1831,7 @@ export default function HomePage() {
                                             setSearchQuery('How is our EBIT margin trending?');
                                             setTimeout(handleAISearch, 100);
                                         }}
-                                        className="text-xs text-cyan-600 hover:text-cyan-700 underline"
+                                        className="text-xs text-purple-600 hover:text-purple-700 underline"
                                     >
                                         "How is our EBIT margin trending?"
                                     </button>
@@ -1841,7 +1841,7 @@ export default function HomePage() {
                                             setSearchQuery('What is our cash flow position?');
                                             setTimeout(handleAISearch, 100);
                                         }}
-                                        className="text-xs text-cyan-600 hover:text-cyan-700 underline"
+                                        className="text-xs text-purple-600 hover:text-purple-700 underline"
                                     >
                                         "What is our cash flow position?"
                                     </button>
@@ -1853,7 +1853,7 @@ export default function HomePage() {
                                             setSearchQuery('How is manufacturing quality?');
                                             setTimeout(handleAISearch, 100);
                                         }}
-                                        className="text-xs text-cyan-600 hover:text-cyan-700 underline"
+                                        className="text-xs text-purple-600 hover:text-purple-700 underline"
                                     >
                                         "How is manufacturing quality?"
                                     </button>
@@ -1863,7 +1863,7 @@ export default function HomePage() {
                                             setSearchQuery('What are our top risks?');
                                             setTimeout(handleAISearch, 100);
                                         }}
-                                        className="text-xs text-cyan-600 hover:text-cyan-700 underline"
+                                        className="text-xs text-purple-600 hover:text-purple-700 underline"
                                     >
                                         "What are our top risks?"
                                     </button>
@@ -1873,7 +1873,7 @@ export default function HomePage() {
                                             setSearchQuery('What is our product mix?');
                                             setTimeout(handleAISearch, 100);
                                         }}
-                                        className="text-xs text-cyan-600 hover:text-cyan-700 underline"
+                                        className="text-xs text-purple-600 hover:text-purple-700 underline"
                                     >
                                         "What is our product mix?"
                                     </button>
@@ -1903,7 +1903,7 @@ export default function HomePage() {
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                     onClick={() => handleInsightClick(insight)}
-                                    className="bg-white rounded-xl shadow-sm hover:shadow-lg hover:shadow-cyan-100 transition-all cursor-pointer border border-gray-100 hover:border-cyan-200 relative overflow-hidden min-h-[280px] flex flex-col"
+                                    className="bg-white rounded-xl shadow-sm hover:shadow-lg hover:shadow-purple-100 transition-all cursor-pointer border border-gray-100 hover:border-purple-200 relative overflow-hidden min-h-[280px] flex flex-col"
                                 >
                                     {/* Status indicator bar at top */}
                                     <div className={`absolute top-0 left-0 right-0 h-1 ${insight.priority === 'critical' ? 'bg-red-500' :
@@ -2059,7 +2059,7 @@ export default function HomePage() {
                                         {/* Footer with category and action - moved to bottom */}
                                         <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
                                             <span className="text-xs text-gray-500">{insight.category}</span>
-                                            <button className="text-xs font-medium text-cyan-600 hover:text-cyan-700 flex items-center">
+                                            <button className="text-xs font-medium text-purple-600 hover:text-purple-700 flex items-center">
                                                 {insight.action}
                                                 <ArrowRight className="w-3 h-3 ml-0.5" />
                                             </button>
@@ -2139,7 +2139,7 @@ export default function HomePage() {
                                                     <div className="flex items-center space-x-1">
                                                         <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
                                                             <div
-                                                                className="h-full bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full"
+                                                                className="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"
                                                                 style={{ width: `${selectedInsight.confidenceScore}%` }}
                                                             />
                                                         </div>
@@ -2220,16 +2220,16 @@ export default function HomePage() {
                                     {/* Right Column */}
                                     <div className="space-y-6">
                                         {/* AI Recommendations */}
-                                        <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl p-5 border border-cyan-200">
+                                        <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-5 border border-purple-200">
                                             <div className="flex items-center space-x-2 mb-4">
-                                                <Brain className="w-5 h-5 text-cyan-600" />
+                                                <Brain className="w-5 h-5 text-purple-600" />
                                                 <h4 className="text-sm font-semibold text-gray-900">AI Recommendations</h4>
                                             </div>
                                             <div className="space-y-3">
                                                 {selectedInsight.aiRecommendations.map((rec: string, idx: number) => (
                                                     <div key={idx} className="flex items-start space-x-2">
-                                                        <div className="w-6 h-6 rounded-full bg-cyan-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                            <span className="text-xs font-bold text-cyan-700">{idx + 1}</span>
+                                                        <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                            <span className="text-xs font-bold text-purple-700">{idx + 1}</span>
                                                         </div>
                                                         <p className="text-sm text-gray-700">{rec}</p>
                                                     </div>
@@ -2252,7 +2252,7 @@ export default function HomePage() {
                                                 onClick={handleViewConsole}
                                                 disabled={!selectedInsight?.consoleAvailable}
                                                 className={`flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-all shadow-lg ${selectedInsight?.consoleAvailable
-                                                    ? 'text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 hover:shadow-xl'
+                                                    ? 'text-white bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 hover:shadow-xl'
                                                     : 'text-gray-400 bg-gray-100 cursor-not-allowed'
                                                     }`}
                                             >
@@ -2288,14 +2288,14 @@ export default function HomePage() {
                             className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
                         >
                             {/* Header */}
-                            <div className="bg-gradient-to-r from-cyan-500 to-blue-600 p-6 text-white">
+                            <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 text-white">
                                 <div className="flex items-start justify-between">
                                     <div>
                                         <div className="flex items-center space-x-3 mb-2">
                                             <Brain className="w-8 h-8" />
                                             <h2 className="text-2xl font-bold">AI Analysis Results</h2>
                                         </div>
-                                        <p className="text-cyan-100">Query: "{searchQuery}"</p>
+                                        <p className="text-purple-100">Query: "{searchQuery}"</p>
                                     </div>
                                     <button
                                         onClick={() => setShowSearchResults(false)}
@@ -2310,13 +2310,13 @@ export default function HomePage() {
                             <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
                                 {isSearching ? (
                                     <div className="flex flex-col items-center justify-center py-20">
-                                        <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                                        <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
                                         <p className="text-gray-600">Analyzing business data and generating insights...</p>
                                     </div>
                                 ) : searchResults ? (
                                     <div className="space-y-6">
                                         {/* Summary */}
-                                        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-5 border border-blue-200">
+                                        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-5 border border-blue-200">
                                             <h3 className="font-semibold text-gray-900 mb-2">Executive Summary</h3>
                                             <p className="text-gray-700">{searchResults.summary}</p>
                                         </div>
@@ -2324,7 +2324,7 @@ export default function HomePage() {
                                         {/* Key Findings */}
                                         <div>
                                             <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                                                <Target className="w-5 h-5 mr-2 text-cyan-600" />
+                                                <Target className="w-5 h-5 mr-2 text-purple-600" />
                                                 Key Findings
                                             </h3>
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -2334,7 +2334,7 @@ export default function HomePage() {
                                                             <h4 className="font-medium text-gray-900 text-sm">{finding.title}</h4>
                                                             <div className="flex items-center space-x-1">
                                                                 <span className="text-xs text-gray-500">Confidence</span>
-                                                                <span className="text-xs font-bold text-cyan-600">{finding.confidence}%</span>
+                                                                <span className="text-xs font-bold text-purple-600">{finding.confidence}%</span>
                                                             </div>
                                                         </div>
                                                         <p className="text-sm text-gray-600">{finding.detail}</p>

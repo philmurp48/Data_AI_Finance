@@ -47,7 +47,7 @@ export default function DisclaimerModal() {
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Header */}
-                            <div className="bg-gradient-to-r from-cyan-500 to-blue-600 p-4 rounded-t-xl">
+                            <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-4 rounded-t-xl">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center space-x-2">
                                         <AlertTriangle className="w-6 h-6 text-white" />
@@ -65,12 +65,12 @@ export default function DisclaimerModal() {
                             {/* Content */}
                             <div className="p-6">
                                 <p className="text-gray-900 font-medium mb-4">
-                                    This Finance360 platform is a demonstration prototype created by Accenture for General Motors.
+                                    This platform is a demonstration prototype created by Accenture for management reporting and analytics.
                                 </p>
 
                                 <div className="space-y-3 mb-5">
                                     <div className="flex items-start space-x-2">
-                                        <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full mt-1.5 flex-shrink-0" />
+                                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-1.5 flex-shrink-0" />
                                         <div className="text-sm">
                                             <span className="font-semibold text-gray-900">Prototype Environment:</span>
                                             <span className="text-gray-700 ml-1">
@@ -80,7 +80,7 @@ export default function DisclaimerModal() {
                                     </div>
 
                                     <div className="flex items-start space-x-2">
-                                        <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full mt-1.5 flex-shrink-0" />
+                                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-1.5 flex-shrink-0" />
                                         <div className="text-sm">
                                             <span className="font-semibold text-gray-900">Limited Functionality:</span>
                                             <span className="text-gray-700 ml-1">
@@ -90,7 +90,7 @@ export default function DisclaimerModal() {
                                     </div>
 
                                     <div className="flex items-start space-x-2">
-                                        <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full mt-1.5 flex-shrink-0" />
+                                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-1.5 flex-shrink-0" />
                                         <div className="text-sm">
                                             <span className="font-semibold text-gray-900">Synthetic Data:</span>
                                             <span className="text-gray-700 ml-1">
@@ -100,8 +100,8 @@ export default function DisclaimerModal() {
                                     </div>
                                 </div>
 
-                                <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-3 mb-5">
-                                    <p className="text-xs text-cyan-800">
+                                <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-5">
+                                    <p className="text-xs text-purple-800">
                                         By accessing this prototype, you acknowledge and accept these limitations.
                                     </p>
                                 </div>
@@ -109,7 +109,7 @@ export default function DisclaimerModal() {
                                 {/* Action Button */}
                                 <button
                                     onClick={handleAcknowledge}
-                                    className="w-full px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
+                                    className="w-full px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-purple-500/30 transition-all"
                                 >
                                     I Understand & Accept
                                 </button>

@@ -23,12 +23,12 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'market-demand',
         title: 'Market & Demand',
-        objective: 'Understand the market and demand for GM products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
+        objective: 'Understand the market and demand for products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
         description: 'Analyzes market strategy, EV adoption, consumer demand patterns, government incentives, trade regulations, and strategic partnerships to drive market share and segment growth',
         icon: Globe,
-        bgColor: 'bg-cyan-50',
-        iconColor: 'text-cyan-700',
-        borderColor: 'border-cyan-200',
+        bgColor: 'bg-purple-50',
+        iconColor: 'text-purple-700',
+        borderColor: 'border-purple-200',
         metrics: [
             { label: 'Market Share', value: '18.5%', change: 0.8, trend: 'up' },
             { label: 'Segment Growth', value: '8.5%', change: 2.1, trend: 'up' }
@@ -38,7 +38,7 @@ export const businessConsoles: BusinessConsole[] = [
             {
                 name: 'Market Strategy',
                 subDrivers: [
-                    'OEM, Brand, Nameplate and Vehicle Class Growth Strategies (Wholesale and Retail)',
+                    'Manufacturer, Brand, Product Line and Category Growth Strategies (Wholesale and Retail)',
                     'Market Share Strategy',
                     'Target Market',
                     'Incentives',
@@ -89,7 +89,7 @@ export const businessConsoles: BusinessConsole[] = [
                     'Co-branded Features',
                     'Partner Manufacturers',
                     '3PL Product Development',
-                    'OEM'
+                    'Manufacturer'
                 ]
             }
         ]
@@ -97,7 +97,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'product-mix',
         title: 'Product Mix',
-        objective: 'Understand the market and demand for GM products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
+        objective: 'Understand the market and demand for products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
         description: 'Optimizes product portfolio strategy across EV/ICE divisions, manages vehicle launches, tracks volume contributions, and aligns annual planning with market demands',
         icon: Package,
         bgColor: 'bg-purple-50',
@@ -134,7 +134,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'volume',
         title: 'Volume',
-        objective: 'Understand the market and demand for GM products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
+        objective: 'Understand the market and demand for products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
         description: 'Manages long-term volume planning, monitors total vehicle sales, tracks fleet vs retail performance, and coordinates 3rd party sales and subscription volumes',
         icon: TrendingUp,
         bgColor: 'bg-emerald-50',
@@ -150,7 +150,7 @@ export const businessConsoles: BusinessConsole[] = [
                 name: 'Long Term Volume Planning',
                 subDrivers: [
                     'Total Vehicle Sales',
-                    '3rd Party Sales (i.e. Honda)',
+                    '3rd Party Sales (i.e. Partner Manufacturers)',
                     'Fleet Sales',
                     'Retail / Non-Fleet Sales',
                     'Subscription Volumes'
@@ -169,7 +169,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'pricing',
         title: 'Pricing',
-        objective: 'Understand the market and demand for GM products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
+        objective: 'Understand the market and demand for products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
         description: 'Drives vehicle pricing strategy, manages dealer programs and incentives, monitors trade regulations, oversees subscription models, and optimizes parts pricing dynamics',
         icon: DollarSign,
         bgColor: 'bg-amber-50',
@@ -192,7 +192,7 @@ export const businessConsoles: BusinessConsole[] = [
                 ]
             },
             {
-                name: 'OEM & Dealer Programs',
+                name: 'Manufacturer & Dealer Programs',
                 subDrivers: ['Incentives']
             },
             {
@@ -216,7 +216,7 @@ export const businessConsoles: BusinessConsole[] = [
                 subDrivers: []
             },
             {
-                name: 'GM Energy (Consumer Garage Charger)',
+                name: 'Energy Solutions (Consumer Charging)',
                 subDrivers: []
             }
         ]
@@ -224,7 +224,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'product-line-profitability',
         title: 'Product Line Profitability',
-        objective: 'Manage operational performance by tracking efficiency and controlling costs to improve the profitability of GM\'s products.',
+        objective: 'Manage operational performance by tracking efficiency and controlling costs to improve product profitability.',
         description: 'Tracks product line P&L performance, analyzes variable and fixed costs, manages CCA profitability, and identifies opportunities to improve contribution margins',
         icon: DollarSign,
         bgColor: 'bg-green-50',
@@ -262,7 +262,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'adjacencies',
         title: 'Adjacencies',
-        objective: 'Manage operational performance by tracking efficiency and controlling costs to improve the profitability of GM\'s products.',
+        objective: 'Manage operational performance by tracking efficiency and controlling costs to improve product profitability.',
         description: 'Explores software & services opportunities, manages subscription revenue streams, tracks variable costs, and develops new business models beyond traditional vehicle sales',
         icon: BarChart3,
         bgColor: 'bg-indigo-50',
@@ -287,7 +287,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'production-build-plan',
         title: 'Production Build Plan',
-        objective: 'Manage operational performance by tracking efficiency and controlling costs to improve the profitability of GM\'s products.',
+        objective: 'Manage operational performance by tracking efficiency and controlling costs to improve product profitability.',
         description: 'Manages manufacturing efficiency, coordinates MTO/MTS strategies, minimizes plant downtime, optimizes production volumes, and tracks supplier performance metrics',
         icon: Factory,
         bgColor: 'bg-orange-50',
@@ -322,7 +322,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'inventory',
         title: 'Inventory',
-        objective: 'Manage operational performance by tracking efficiency and controlling costs to improve the profitability of GM\'s products.',
+        objective: 'Manage operational performance by tracking efficiency and controlling costs to improve product profitability.',
         description: 'Optimizes vehicle inventory across yards and dealers, manages quality holds, tracks parts distribution, and balances working capital requirements with market demand',
         icon: Truck,
         bgColor: 'bg-teal-50',
@@ -339,9 +339,9 @@ export const businessConsoles: BusinessConsole[] = [
                 subDrivers: [
                     'Yard',
                     'Holds (Quality / Maintenance Process)',
-                    'GM Stock*',
-                    'NA Dealer',
-                    'GMI Dealer',
+                    'Company Stock*',
+                    'Domestic Dealer',
+                    'International Dealer',
                     'Company Vehicle'
                 ]
             },
@@ -354,7 +354,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'consolidated-results-expectations',
         title: 'Consolidated Results & Expectations',
-        objective: 'Understand and enhance financial performance through execution of GM capital framework.',
+        objective: 'Understand and enhance financial performance through execution of capital framework.',
         description: 'Consolidates top-level financials, manages shareholder returns, tracks currency and FX impacts, and provides executive-level financial performance visibility',
         icon: DollarSign,
         bgColor: 'bg-blue-50',
@@ -383,7 +383,7 @@ export const businessConsoles: BusinessConsole[] = [
     {
         id: 'capital-allocation-management',
         title: 'Capital Allocation / Management',
-        objective: 'Understand and enhance financial performance through execution of GM capital framework.',
+        objective: 'Understand and enhance financial performance through execution of capital framework.',
         description: 'Executes strategic capital decisions, manages treasury operations, oversees investment allocation, monitors debt and liquidity, and optimizes working capital deployment',
         icon: Building,
         bgColor: 'bg-violet-50',
