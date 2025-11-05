@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import {
     BarChart3,
+    Brain,
     FileText,
     Grid,
     Home,
@@ -93,6 +94,12 @@ export default function ManagementReportingLayout({
             title: 'Connected Enterprise Planning',
             href: '/connected-planning',
             icon: Repeat,
+            subItems: []
+        },
+        {
+            title: 'AI Agents',
+            href: '/ai-agents',
+            icon: Brain,
             subItems: []
         }
     ];
