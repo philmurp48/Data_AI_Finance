@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
     AlertCircle,
     BarChart3,
-    Brain,
     ChevronRight,
     DollarSign,
     LineChart,
@@ -12,13 +11,14 @@ import {
     Play,
     RefreshCw,
     Save,
+    Send,
     Shield,
     Sliders,
     Target,
-    TrendingUp,
-    Zap
+    TrendingUp
 } from 'lucide-react';
 import { useState } from 'react';
+import { parseScenarioFromText } from './scenario-parser';
 
 interface Lever {
     id: string;
@@ -123,6 +123,8 @@ const scenarioLevers: Lever[] = [
     { id: 'material-inflation', name: 'Material Inflation', category: 'Operations', currentValue: 0, minValue: -5, maxValue: 15, unit: '%', impact: 'medium' },
     { id: 'labor-productivity', name: 'Labor Productivity', category: 'Operations', currentValue: 0, minValue: -10, maxValue: 10, unit: '%', impact: 'medium' },
     { id: 'supply-chain', name: 'Supply Chain Efficiency', category: 'Operations', currentValue: 0, minValue: -15, maxValue: 15, unit: '%', impact: 'medium' },
+    { id: 'warranty-costs', name: 'Warranty Costs', category: 'Operations', currentValue: 0, minValue: -20, maxValue: 20, unit: '%', impact: 'medium' },
+    { id: 'marketing-spend', name: 'Marketing Spend', category: 'Operations', currentValue: 0, minValue: -30, maxValue: 30, unit: '%', impact: 'medium' },
 
     // Financial
     { id: 'fx-rate', name: 'FX Rate Impact', category: 'Financial', currentValue: 0, minValue: -10, maxValue: 10, unit: '%', impact: 'low' },
@@ -130,6 +132,21 @@ const scenarioLevers: Lever[] = [
 ];
 
 type AnalysisTab = 'pl-impact' | 'monte-carlo' | 'optimization' | 'risk-analysis';
+
+interface ChatMessage {
+    id: string;
+    role: 'user' | 'assistant';
+    content: string;
+    timestamp: Date;
+}
+
+// Helper function to format numbers with commas
+const formatNumber = (num: number, decimals: number = 0): string => {
+    return num.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+    });
+};
 
 export default function ScenarioModelingPage() {
     const [activeTab, setActiveTab] = useState<AnalysisTab>('pl-impact');
@@ -143,6 +160,10 @@ export default function ScenarioModelingPage() {
     const [optimizationTarget, setOptimizationTarget] = useState({ metric: 'ebit', value: 4500 });
     const [optimizedLevers, setOptimizedLevers] = useState<Record<string, number> | null>(null);
     const [showDistributionTable, setShowDistributionTable] = useState(false);
+    const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+    const [chatInput, setChatInput] = useState('');
+    const [isProcessingChat, setIsProcessingChat] = useState(false);
+    const [showChatDetails, setShowChatDetails] = useState(false);
 
     const handleScenarioSelect = (scenarioId: string) => {
         setSelectedScenario(scenarioId);
@@ -161,31 +182,237 @@ export default function ScenarioModelingPage() {
         setSelectedScenario(''); // Clear scenario selection on manual adjustment
     };
 
-    const calculateImpact = () => {
-        // Simplified P&L impact calculation
-        const baseRevenue = 31000; // $31B
-        const baseEBIT = 3875; // 12.5% margin
+    const handleChatSubmit = async () => {
+        if (!chatInput.trim() || isProcessingChat) return;
 
+        const userMessage: ChatMessage = {
+            id: Date.now().toString(),
+            role: 'user',
+            content: chatInput,
+            timestamp: new Date()
+        };
+
+        setChatMessages(prev => [...prev, userMessage]);
+        setChatInput('');
+        setIsProcessingChat(true);
+
+        // Simulate AI processing delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Parse scenario and get lever adjustments
+        const { levers, explanation } = parseScenarioFromText(chatInput);
+
+        // Apply lever adjustments
+        const newLeverValues: Record<string, number> = { ...leverValues };
+        Object.keys(levers).forEach(leverId => {
+            const lever = scenarioLevers.find(l => l.id === leverId);
+            if (lever) {
+                newLeverValues[leverId] = Math.max(
+                    lever.minValue,
+                    Math.min(lever.maxValue, levers[leverId])
+                );
+            }
+        });
+
+        setLeverValues(newLeverValues);
+        setSelectedScenario(''); // Clear scenario selection
+
+        const assistantMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            role: 'assistant',
+            content: `${explanation}\n\nI've adjusted the following levers:\n${Object.entries(levers).map(([id, value]) => {
+                const lever = scenarioLevers.find(l => l.id === id);
+                return `• ${lever?.name}: ${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
+            }).join('\n')}\n\nThe P&L impact has been calculated and is shown below.`,
+            timestamp: new Date()
+        };
+
+        setChatMessages(prev => [...prev, assistantMessage]);
+        setIsProcessingChat(false);
+    };
+
+    const calculateImpact = () => {
+        // Automotive-specific P&L calculation
+        // Base values for a typical automotive manufacturer ($31B revenue)
+        const baseRevenue = 31000; // $31B
+        
+        // Revenue breakdown by segment (typical automotive)
+        const basePassengerVehicles = 18600; // 60% of revenue
+        const baseCommercialVehicles = 4650; // 15% of revenue
+        const basePartsAndServices = 7750; // 25% of revenue
+
+        // Cost of Sales (COGS) - Automotive specific
+        const baseMaterials = 10850; // 35% of revenue (steel, aluminum, plastics, electronics)
+        const baseLabor = 4650; // 15% of revenue
+        const baseManufacturingOverhead = 3100; // 10% of revenue (facilities, utilities, depreciation)
+        const baseCOGS = baseMaterials + baseLabor + baseManufacturingOverhead; // 18600 total
+
+        // Gross Profit
+        const baseGrossProfit = baseRevenue - baseCOGS; // 12400
+
+        // Operating Expenses - Automotive specific
+        const baseRD = 2325; // 7.5% of revenue (R&D is critical for automotive)
+        const baseMarketing = 1550; // 5% of revenue (Marketing spend)
+        const baseWarranty = 775; // 2.5% of revenue (Warranty costs)
+        const baseSGandA = 3100; // 10% of revenue (Sales, Admin - excluding Marketing)
+        const baseOtherOpEx = 775; // 2.5% of revenue
+        const baseOpEx = baseRD + baseMarketing + baseWarranty + baseSGandA + baseOtherOpEx; // 8525 total
+
+        // EBIT
+        const baseEBIT = baseGrossProfit - baseOpEx; // 3875 (12.5% margin maintained)
+
+        // Other Income/Expense
+        const baseInterest = 350;
+        const baseOtherIncome = 100;
+
+        // EBT
+        const baseEBT = baseEBIT - baseInterest + baseOtherIncome; // 3625
+
+        // Tax
+        const baseTax = 906; // 25% tax rate
+        const baseNetIncome = baseEBT - baseTax; // 2719
+
+        // Revenue impact from volume, price, and market share
         const revenueImpact = baseRevenue * (
             (leverValues['volume-growth'] || 0) / 100 +
             (leverValues['price-change'] || 0) / 100 +
             (leverValues['market-share'] || 0) / 100 * 0.5
         );
 
-        const costImpact = baseRevenue * (
-            (leverValues['material-inflation'] || 0) / 100 * 0.4 +
-            (leverValues['tariffs'] || 0) / 100 * 0.02 +
-            (leverValues['labor-productivity'] || 0) / 100 * -0.15
+        // Segment revenue impacts (proportional)
+        const passengerVehiclesImpact = basePassengerVehicles * (
+            (leverValues['volume-growth'] || 0) / 100 +
+            (leverValues['price-change'] || 0) / 100 +
+            (leverValues['market-share'] || 0) / 100 * 0.5
+        );
+        const commercialVehiclesImpact = baseCommercialVehicles * (
+            (leverValues['volume-growth'] || 0) / 100 * 0.8 + // Commercial vehicles less price sensitive
+            (leverValues['price-change'] || 0) / 100 * 0.6 +
+            (leverValues['market-share'] || 0) / 100 * 0.3
+        );
+        const partsAndServicesImpact = basePartsAndServices * (
+            (leverValues['volume-growth'] || 0) / 100 * 0.6 + // Parts/services more stable
+            (leverValues['price-change'] || 0) / 100 * 0.4 +
+            (leverValues['market-share'] || 0) / 100 * 0.2
         );
 
-        const ebitImpact = revenueImpact * 0.125 - costImpact;
-        const netIncomeImpact = ebitImpact * 0.75; // 25% tax rate
+        // COGS impact - Automotive specific
+        const materialsImpact = baseMaterials * (
+            (leverValues['volume-growth'] || 0) / 100 + // Materials scale with volume
+            (leverValues['material-inflation'] || 0) / 100 * 0.8 + // Material inflation directly impacts
+            (leverValues['tariffs'] || 0) / 100 * 0.05 + // Tariffs impact imported materials
+            (leverValues['supply-chain'] || 0) / 100 * -0.15 // Supply chain efficiency reduces material costs
+        );
+
+        const laborImpact = baseLabor * (
+            (leverValues['volume-growth'] || 0) / 100 + // Labor scales with volume
+            (leverValues['labor-productivity'] || 0) / 100 * -0.3 // Productivity reduces labor costs
+        );
+
+        const mfgOverheadImpact = baseManufacturingOverhead * (
+            (leverValues['volume-growth'] || 0) / 100 * 0.6 + // Some overhead is fixed
+            (leverValues['supply-chain'] || 0) / 100 * -0.1 // Efficiency reduces overhead
+        );
+
+        const cogsImpact = materialsImpact + laborImpact + mfgOverheadImpact;
+
+        // Gross Profit impact
+        const grossProfitImpact = revenueImpact - cogsImpact;
+
+        // Operating Expenses impact
+        const rdImpact = baseRD * (
+            (leverValues['volume-growth'] || 0) / 100 * 0.2 // R&D is mostly fixed
+        );
+
+        const marketingImpact = baseMarketing * (
+            (leverValues['marketing-spend'] || 0) / 100 + // Marketing spend directly impacts
+            (leverValues['volume-growth'] || 0) / 100 * 0.3 // Some marketing scales with growth
+        );
+
+        const warrantyImpact = baseWarranty * (
+            (leverValues['warranty-costs'] || 0) / 100 + // Warranty costs directly impact
+            (leverValues['volume-growth'] || 0) / 100 * 0.6 // Warranty scales with volume
+        );
+
+        const sgaImpact = baseSGandA * (
+            (leverValues['volume-growth'] || 0) / 100 * 0.5 + // Some SG&A is variable
+            (leverValues['labor-productivity'] || 0) / 100 * -0.2 // Productivity reduces SG&A
+        );
+
+        const otherOpExImpact = baseOtherOpEx * (
+            (leverValues['volume-growth'] || 0) / 100 * 0.3
+        );
+
+        const opExImpact = rdImpact + marketingImpact + warrantyImpact + sgaImpact + otherOpExImpact;
+
+        // EBIT impact
+        const ebitImpact = grossProfitImpact - opExImpact;
+
+        // Interest impact
+        const interestImpact = baseInterest * (
+            (leverValues['interest-rates'] || 0) / 100 * 0.5 + // Interest rates affect borrowing costs
+            (leverValues['fx-rate'] || 0) / 100 * 0.1 // FX can affect foreign debt
+        );
+
+        // EBT impact
+        const ebtImpact = ebitImpact - interestImpact;
+
+        // Tax impact (25% tax rate)
+        const taxImpact = ebtImpact * 0.25;
+
+        // Net Income impact
+        const netIncomeImpact = ebtImpact - taxImpact;
+
+        const newRevenue = baseRevenue + revenueImpact;
+        const newEBIT = baseEBIT + ebitImpact;
 
         return {
             revenue: revenueImpact,
+            // Segment breakdowns
+            passengerVehicles: passengerVehiclesImpact,
+            commercialVehicles: commercialVehiclesImpact,
+            partsAndServices: partsAndServicesImpact,
+            // COGS breakdowns
+            materials: materialsImpact,
+            labor: laborImpact,
+            manufacturingOverhead: mfgOverheadImpact,
+            cogs: cogsImpact,
+            grossProfit: grossProfitImpact,
+            // Operating Expenses breakdowns
+            rd: rdImpact,
+            marketing: marketingImpact,
+            warranty: warrantyImpact,
+            sga: sgaImpact,
+            otherOpEx: otherOpExImpact,
+            opEx: opExImpact,
             ebit: ebitImpact,
+            interest: interestImpact,
+            ebt: ebtImpact,
+            tax: taxImpact,
             netIncome: netIncomeImpact,
-            ebitMargin: ((baseEBIT + ebitImpact) / (baseRevenue + revenueImpact)) * 100
+            ebitMargin: newRevenue > 0 ? (newEBIT / newRevenue) * 100 : 12.5,
+            // Base values for display
+            baseRevenue,
+            basePassengerVehicles,
+            baseCommercialVehicles,
+            basePartsAndServices,
+            baseMaterials,
+            baseLabor,
+            baseManufacturingOverhead,
+            baseCOGS,
+            baseGrossProfit,
+            baseRD,
+            baseMarketing,
+            baseWarranty,
+            baseSGandA,
+            baseOtherOpEx,
+            baseOpEx,
+            baseEBIT,
+            baseInterest,
+            baseOtherIncome,
+            baseEBT,
+            baseTax,
+            baseNetIncome
         };
     };
 
@@ -375,42 +602,113 @@ export default function ScenarioModelingPage() {
                 </div>
             </div>
 
+            {/* Scenario Chat - Horizontal */}
+            <div className="bg-white border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-6 py-3">
+                    <div className="flex items-center space-x-4">
+                        <label className="text-sm font-medium text-gray-700 whitespace-nowrap">Describe the scenario:</label>
+                        <div className="flex-1 flex items-center space-x-2">
+                            {chatMessages.length > 0 && (
+                                <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-sm">
+                                    <span className="text-gray-600">Applied:</span>
+                                    <span className="font-medium text-gray-900">
+                                        {chatMessages[chatMessages.length - 1]?.role === 'assistant' 
+                                            ? chatMessages[chatMessages.length - 1].content.split('\n')[0].replace('Applied ', '').replace('.', '')
+                                            : 'Processing...'}
+                                    </span>
+                                    <button
+                                        onClick={() => setShowChatDetails(!showChatDetails)}
+                                        className="ml-2 text-gray-500 hover:text-gray-700 transition-colors"
+                                        title={showChatDetails ? "Hide details" : "Show details"}
+                                    >
+                                        <ChevronRight className={`w-4 h-4 transition-transform ${showChatDetails ? 'rotate-90' : ''}`} />
+                                    </button>
+                                </div>
+                            )}
+                            <input
+                                type="text"
+                                value={chatInput}
+                                onChange={(e) => setChatInput(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleChatSubmit()}
+                                placeholder="e.g., What if tariffs increase by 25%?"
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan focus:border-transparent"
+                                disabled={isProcessingChat}
+                            />
+                            <button
+                                onClick={handleChatSubmit}
+                                disabled={!chatInput.trim() || isProcessingChat}
+                                className="px-4 py-2 bg-cyan-gradient text-navy-900 font-semibold rounded-lg glow-cyan-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                            >
+                                {isProcessingChat ? (
+                                    <Loader className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Send className="w-4 h-4" />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                    {showChatDetails && chatMessages.length > 0 && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="mt-3 pt-3 border-t border-gray-200"
+                        >
+                            <div className="space-y-2 max-h-48 overflow-y-auto">
+                                {chatMessages.map((message) => (
+                                    <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`max-w-[80%] rounded-lg p-2 text-sm ${
+                                            message.role === 'user'
+                                                ? 'bg-cyan text-navy-900'
+                                                : 'bg-gray-50 border border-gray-200'
+                                        }`}>
+                                            <p className="whitespace-pre-wrap">{message.content}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+                </div>
+            </div>
+
+            {/* Scenarios Horizontal Selector */}
+            <div className="bg-white border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-6 py-4">
+                    <h3 className="text-sm font-medium text-gray-700 mb-3">Scenarios</h3>
+                    <div className="flex space-x-3">
+                        {scenarios.map(scenario => (
+                            <button
+                                key={scenario.id}
+                                onClick={() => handleScenarioSelect(scenario.id)}
+                                className={`px-4 py-2 rounded-lg border-2 transition-all ${selectedScenario === scenario.id
+                                        ? 'border-cyan bg-cyan-50'
+                                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                                    }`}
+                            >
+                                <div className="flex items-center space-x-3">
+                                    <div className="text-left">
+                                        <h4 className="font-semibold text-gray-900 text-sm">{scenario.name}</h4>
+                                        <p className="text-xs text-gray-600">{scenario.description}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className={`text-sm font-bold ${scenario.impact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                            {scenario.impact >= 0 ? '+' : ''}{scenario.impact}M
+                                        </p>
+                                        <p className="text-xs text-gray-500">{scenario.confidence}%</p>
+                                    </div>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-6 py-8">
                 <div className="grid grid-cols-12 gap-8">
-                    {/* Left Panel - Scenarios and Levers */}
-                    <div className="col-span-5 space-y-6">
-                        {/* Scenarios */}
-                        <div className="bg-white rounded-xl p-6 shadow-sm">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Scenarios</h3>
-                            <div className="space-y-3">
-                                {scenarios.map(scenario => (
-                                    <button
-                                        key={scenario.id}
-                                        onClick={() => handleScenarioSelect(scenario.id)}
-                                        className={`w-full p-4 rounded-lg border-2 transition-all text-left ${selectedScenario === scenario.id
-                                                ? 'border-cyan bg-cyan-50'
-                                                : 'border-gray-200 hover:border-gray-300'
-                                            }`}
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <h4 className="font-semibold text-gray-900">{scenario.name}</h4>
-                                                <p className="text-sm text-gray-600">{scenario.description}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className={`text-lg font-bold ${scenario.impact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                    {scenario.impact >= 0 ? '+' : ''}{scenario.impact}M
-                                                </p>
-                                                <p className="text-xs text-gray-500">{scenario.confidence}% confidence</p>
-                                            </div>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Adjust Levers */}
+                    {/* Left Panel - Adjust Levers */}
+                    <div className="col-span-5">
                         <div className="bg-white rounded-xl p-6 shadow-sm">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Adjust Levers</h3>
                             <div className="space-y-4">
@@ -467,67 +765,314 @@ export default function ScenarioModelingPage() {
                                     exit={{ opacity: 0, y: -20 }}
                                     className="space-y-6"
                                 >
-                                    {/* P&L Impact Summary */}
+                                    {/* Detailed Automotive P&L Impact */}
                                     <div className="bg-white rounded-xl p-6 shadow-sm">
-                                        <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Flow-Through Impact</h3>
-                                        <div className="grid grid-cols-2 gap-6">
-                                            <div className="space-y-4">
-                                                <div>
-                                                    <p className="text-sm text-gray-600">Revenue Impact</p>
-                                                    <p className={`text-2xl font-bold ${impact.revenue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                        {impact.revenue >= 0 ? '+' : ''}${Math.abs(impact.revenue).toFixed(0)}M
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm text-gray-600">EBIT Impact</p>
-                                                    <p className={`text-2xl font-bold ${impact.ebit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                        {impact.ebit >= 0 ? '+' : ''}${Math.abs(impact.ebit).toFixed(0)}M
-                                                    </p>
-                                                </div>
+                                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Automotive P&L Flow-Through Impact</h3>
+                                        
+                                        {/* Summary Cards */}
+                                        <div className="grid grid-cols-4 gap-4 mb-6">
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <p className="text-xs text-gray-600 mb-1">Revenue Impact</p>
+                                                <p className={`text-xl font-bold ${impact.revenue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                    {impact.revenue >= 0 ? '+' : ''}${Math.abs(impact.revenue).toFixed(0)}M
+                                                </p>
                                             </div>
-                                            <div className="space-y-4">
-                                                <div>
-                                                    <p className="text-sm text-gray-600">Net Income Impact</p>
-                                                    <p className={`text-2xl font-bold ${impact.netIncome >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                        {impact.netIncome >= 0 ? '+' : ''}${Math.abs(impact.netIncome).toFixed(0)}M
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm text-gray-600">EBIT Margin</p>
-                                                    <p className="text-2xl font-bold text-gray-900">
-                                                        {impact.ebitMargin.toFixed(1)}%
-                                                    </p>
-                                                </div>
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <p className="text-xs text-gray-600 mb-1">EBIT Impact</p>
+                                                <p className={`text-xl font-bold ${impact.ebit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                    {impact.ebit >= 0 ? '+' : ''}${Math.abs(impact.ebit).toFixed(0)}M
+                                                </p>
+                                            </div>
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <p className="text-xs text-gray-600 mb-1">Net Income Impact</p>
+                                                <p className={`text-xl font-bold ${impact.netIncome >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                    {impact.netIncome >= 0 ? '+' : ''}${Math.abs(impact.netIncome).toFixed(0)}M
+                                                </p>
+                                            </div>
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <p className="text-xs text-gray-600 mb-1">EBIT Margin</p>
+                                                <p className="text-xl font-bold text-gray-900">
+                                                    {impact.ebitMargin.toFixed(1)}%
+                                                </p>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    {/* AI Recommendations */}
-                                    <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl p-6 border border-cyan">
-                                        <div className="flex items-center space-x-3 mb-4">
-                                            <Brain className="w-6 h-6 text-cyan" />
-                                            <h3 className="text-lg font-semibold text-gray-900">AI Recommendations</h3>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <div className="flex items-start space-x-3">
-                                                <Zap className="w-5 h-5 text-cyan mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium text-gray-900">Optimize pricing strategy</p>
-                                                    <p className="text-sm text-gray-600">2-3% price increase feasible given market position</p>
+                                        {/* Detailed P&L Table */}
+                                        <div className="border-t border-gray-200 pt-4">
+                                            <h4 className="text-sm font-semibold text-gray-900 mb-3">Automotive P&L Line Item Details</h4>
+                                            <div className="space-y-2">
+                                                {/* Revenue - with segment breakdown */}
+                                                <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-medium text-gray-900">Revenue</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseRevenue)}M</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-sm font-semibold ${impact.revenue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.revenue >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.revenue))}M
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            ${formatNumber(impact.baseRevenue + impact.revenue)}M
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="flex items-start space-x-3">
-                                                <DollarSign className="w-5 h-5 text-cyan mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium text-gray-900">Accelerate cost reduction</p>
-                                                    <p className="text-sm text-gray-600">$200M opportunity in supply chain efficiency</p>
+                                                {/* Revenue Segments */}
+                                                <div className="ml-4 space-y-1 border-l-2 border-gray-200 pl-3">
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Passenger Vehicles</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.basePassengerVehicles)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.passengerVehicles >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.passengerVehicles >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.passengerVehicles))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Commercial Vehicles</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseCommercialVehicles)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.commercialVehicles >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.commercialVehicles >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.commercialVehicles))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Parts & Services</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.basePartsAndServices)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.partsAndServices >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.partsAndServices >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.partsAndServices))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="flex items-start space-x-3">
-                                                <Target className="w-5 h-5 text-cyan mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium text-gray-900">Focus on high-margin products</p>
-                                                    <p className="text-sm text-gray-600">Shift mix to EV/premium segments</p>
+
+                                                {/* Cost of Sales - with breakdown */}
+                                                <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-medium text-gray-900">Cost of Sales</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseCOGS)}M</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-sm font-semibold ${impact.cogs <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.cogs >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.cogs))}M
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            ${formatNumber(impact.baseCOGS + impact.cogs)}M
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                {/* COGS Breakdown */}
+                                                <div className="ml-4 space-y-1 border-l-2 border-gray-200 pl-3">
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Materials & Components</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseMaterials)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.materials <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.materials >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.materials))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Direct Labor</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseLabor)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.labor <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.labor >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.labor))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Manufacturing Overhead</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseManufacturingOverhead)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.manufacturingOverhead <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.manufacturingOverhead >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.manufacturingOverhead))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Gross Profit */}
+                                                <div className="flex items-center justify-between py-2 border-b border-gray-200 bg-gray-50 px-2 rounded">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-semibold text-gray-900">Gross Profit</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseGrossProfit)}M</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-sm font-semibold ${impact.grossProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.grossProfit >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.grossProfit))}M
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            ${formatNumber(impact.baseGrossProfit + impact.grossProfit)}M
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Operating Expenses - with breakdown */}
+                                                <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-medium text-gray-900">Operating Expenses</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseOpEx)}M</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-sm font-semibold ${impact.opEx <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.opEx >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.opEx))}M
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            ${formatNumber(impact.baseOpEx + impact.opEx)}M
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                {/* OpEx Breakdown */}
+                                                <div className="ml-4 space-y-1 border-l-2 border-gray-200 pl-3">
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">R&D Expenses</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseRD)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.rd <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.rd >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.rd))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Marketing Expenses</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseMarketing)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.marketing <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.marketing >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.marketing))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Warranty Costs</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseWarranty)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.warranty <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.warranty >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.warranty))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">SG&A Expenses</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseSGandA)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.sga <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.sga >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.sga))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between py-1">
+                                                        <div className="flex-1">
+                                                            <p className="text-xs text-gray-700">Other Operating Expenses</p>
+                                                            <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseOtherOpEx)}M</p>
+                                                        </div>
+                                                        <div className="text-right w-28">
+                                                            <p className={`text-xs font-medium ${impact.otherOpEx <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                {impact.otherOpEx >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.otherOpEx))}M
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* EBIT */}
+                                                <div className="flex items-center justify-between py-2 border-b border-gray-200 bg-gray-50 px-2 rounded">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-semibold text-gray-900">EBIT</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseEBIT)}M</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-sm font-semibold ${impact.ebit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.ebit >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.ebit))}M
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            ${formatNumber(impact.baseEBIT + impact.ebit)}M
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Interest */}
+                                                <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-medium text-gray-900">Interest Expense</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseInterest)}M</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-sm font-semibold ${impact.interest <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.interest >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.interest))}M
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            ${formatNumber(impact.baseInterest + impact.interest)}M
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* EBT */}
+                                                <div className="flex items-center justify-between py-2 border-b border-gray-200 bg-gray-50 px-2 rounded">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-semibold text-gray-900">EBT (Earnings Before Tax)</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseEBT)}M</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-sm font-semibold ${impact.ebt >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.ebt >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.ebt))}M
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            ${formatNumber(impact.baseEBT + impact.ebt)}M
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Tax */}
+                                                <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-medium text-gray-900">Income Tax</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseTax)}M (25%)</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-sm font-semibold ${impact.tax <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.tax >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.tax))}M
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            ${formatNumber(impact.baseTax + impact.tax)}M
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Net Income */}
+                                                <div className="flex items-center justify-between py-3 border-t-2 border-gray-300 bg-gradient-to-r from-gray-50 to-gray-100 px-3 rounded">
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-bold text-gray-900">Net Income</p>
+                                                        <p className="text-xs text-gray-500">Base: ${formatNumber(impact.baseNetIncome)}M</p>
+                                                    </div>
+                                                    <div className="text-right w-32">
+                                                        <p className={`text-base font-bold ${impact.netIncome >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {impact.netIncome >= 0 ? '+' : ''}${formatNumber(Math.abs(impact.netIncome))}M
+                                                        </p>
+                                                        <p className="text-sm font-semibold text-gray-900">
+                                                            ${formatNumber(impact.baseNetIncome + impact.netIncome)}M
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
