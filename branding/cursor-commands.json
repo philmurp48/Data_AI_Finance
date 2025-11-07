@@ -7,7 +7,7 @@
     {
       "name": "scaffold-brand-prototype",
       "description": "Create a new prototype with full Controller AI Workbench branding and architecture",
-      "template": "Create a new Next.js 14 prototype with the following brand-compliant structure:\n\n1. **Project Setup:**\n   - Next.js 14 with App Router\n   - TypeScript with strict mode\n   - Tailwind CSS with brand tokens\n   - shadcn/ui components\n   - Brand component library\n\n2. **Required Files:**\n   - Copy `branding/` directory with all brand assets\n   - Copy `tailwind.config.ts` with brand colors\n   - Copy `app/globals.css` with premium styles\n   - Setup `.cursor/rules.md` for brand enforcement\n\n3. **Directory Structure:**\n```\napp/                 # Next.js App Router\ncomponents/\n├── ui/             # shadcn/ui base\n├── shared/         # Reusable utilities\n└── [feature]/      # Feature-specific\nbranding/\n├── ui/             # Brand components\n├── brand-tokens.json\n└── writing-style.md\nlib/\n├── types/          # TypeScript definitions\n├── data/           # Data layer\n└── utils.ts\n```\n\n4. **Dependencies:**\n```json\n{\n  \"next\": \"^14.2.0\",\n  \"react\": \"^18.3.0\",\n  \"typescript\": \"^5.3.0\",\n  \"tailwindcss\": \"^3.4.1\",\n  \"@radix-ui/react-*\": \"latest\",\n  \"lucide-react\": \"latest\",\n  \"recharts\": \"^2.12.0\",\n  \"framer-motion\": \"^11.0.5\",\n  \"zustand\": \"^4.5.1\"\n}\n```\n\n5. **Brand Integration:**\n   - Import and use `BrandHeader` component\n   - Apply Accenture purple theme (#8b5cf6)\n   - Use premium card styling\n   - Include AI agent indicators\n   - Follow writing style guidelines",
+      "template": "Create a new Next.js 14 prototype with the following brand-compliant structure:\n\n1. **Project Setup:**\n   - Next.js 14 with App Router\n   - TypeScript with strict mode\n   - Tailwind CSS with brand tokens\n   - shadcn/ui components\n   - Brand component library\n\n2. **Required Files:**\n   - Copy `branding/` directory with all brand assets\n   - Copy `tailwind.config.ts` with brand colors\n   - Copy `app/globals.css` with premium styles\n   - Setup `.cursor/rules.md` for brand enforcement\n\n3. **Directory Structure:**\n```\napp/                 # Next.js App Router\ncomponents/\n├── ui/             # shadcn/ui base\n├── shared/         # Reusable utilities\n└── [feature]/      # Feature-specific\nbranding/\n├── ui/             # Brand components\n├── brand-tokens.json\n└── writing-style.md\nlib/\n├── types/          # TypeScript definitions\n├── data/           # Data layer\n└── utils.ts\n```\n\n4. **Dependencies:**\n```json\n{\n  \"next\": \"^14.2.0\",\n  \"react\": \"^18.3.0\",\n  \"typescript\": \"^5.3.0\",\n  \"tailwindcss\": \"^3.4.1\",\n  \"@radix-ui/react-*\": \"latest\",\n  \"lucide-react\": \"latest\",\n  \"recharts\": \"^2.12.0\",\n  \"framer-motion\": \"^11.0.5\",\n  \"zustand\": \"^4.5.1\"\n}\n```\n\n5. **Brand Integration:**\n   - Import and use `BrandHeader` component\n   - Apply Accenture purple theme (#A100FF)\n   - Use premium card styling\n   - Include AI agent indicators\n   - Follow writing style guidelines",
       "tags": ["scaffold", "brand", "prototype", "setup"]
     },
     {
@@ -60,7 +60,7 @@
     }
   ],
   "variables": {
-    "brandColor": "#8b5cf6",
+    "brandColor": "#A100FF",
     "brandName": "Controller AI Workbench",
     "brandTagline": "AI-Powered R2R Platform",
     "logoPath": "/accenture-logo.png",

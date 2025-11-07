@@ -744,7 +744,7 @@ export default function ScenarioModelingPage() {
                                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                                             style={{
                                                 background: `linear-gradient(to right, #e5e7eb ${((leverValues[lever.id] - lever.minValue) / (lever.maxValue - lever.minValue)) * 100
-                                                    }%, #8b5cf6 ${((leverValues[lever.id] - lever.minValue) / (lever.maxValue - lever.minValue)) * 100
+                                                    }%, #A100FF ${((leverValues[lever.id] - lever.minValue) / (lever.maxValue - lever.minValue)) * 100
                                                     }%)`
                                             }}
                                         />

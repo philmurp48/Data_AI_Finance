@@ -43,18 +43,18 @@ export type {
   FinancialNumberProps
 } from "./data-table-frame";
 
-// Brand constants and utilities - Official Accenture Colors
+// Brand constants and utilities
 export const BRAND_COLORS = {
-  primary: "#A100FF", // Official Accenture Purple
+  primary: "#8b5cf6",
   secondary: "#3b82f6",
   success: "#10b981",
   warning: "#f59e0b",
   danger: "#ef4444",
-  agent: "#A100FF" // Official Accenture Purple for AI agents
+  agent: "#8b5cf6"
 } as const;
 
 export const CHART_COLORS = [
-  "#A100FF", // Official Accenture Purple
+  "#8b5cf6", // Primary purple
   "#3b82f6", // Blue
   "#10b981", // Success green
   "#f59e0b", // Warning amber

@@ -1,0 +1,135 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# ==================================
+# Dependencies
+# ==================================
+/node_modules
+/.pnp
+.pnp.js
+
+# ==================================
+# Testing
+# ==================================
+/coverage
+
+# ==================================
+# Next.js
+# ==================================
+/.next/
+/out/
+
+# Production build
+/build
+
+# ==================================
+# Environment Variables
+# ==================================
+# Local env files
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==================================
+# Debug
+# ==================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ==================================
+# Vercel
+# ==================================
+.vercel
+
+# ==================================
+# TypeScript
+# ==================================
+*.tsbuildinfo
+next-env.d.ts
+
+# ==================================
+# IDE / Editor
+# ==================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
+# Cursor
+.cursor
+
+# ==================================
+# OS Files
+# ==================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ==================================
+# Logs
+# ==================================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ==================================
+# Temporary Files
+# ==================================
+*.tmp
+*.temp
+*.cache
+.cache
+
+# ==================================
+# Database
+# ==================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ==================================
+# Misc
+# ==================================
+.turbo
+.contentlayer
+
+# ==================================
+# Project Specific
+# ==================================
+# Add any project-specific files/folders here
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Generated documentation
+/generated-docs/
+
+# Large data files (add specific paths)
+# /data/large-dataset.json
+

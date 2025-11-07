@@ -3,20 +3,20 @@
 
 export const themeConfig = {
     colors: {
-        // Primary brand colors - Accenture Purple
+        // Primary brand colors - Official Accenture Purple #A100FF
         primary: {
             navy: '#0f172a',      // Dark slate background (from Accenture tokens)
             navyLight: '#1e293b', // Lighter slate for gradients
-            purple: '#8b5cf6',   // Accenture Purple primary
-            purpleDark: '#7c3aed', // Darker purple for hover states
-            purpleLight: '#a78bfa', // Light purple for accents
-            purpleGlow: 'rgba(139, 92, 246, 0.4)', // Purple glow effect
+            purple: '#A100FF',   // Official Accenture Purple primary
+            purpleDark: '#7500C0', // Darker purple for hover states
+            purpleLight: '#C2A3FF', // Light purple for accents
+            purpleGlow: 'rgba(161, 0, 255, 0.4)', // Purple glow effect
         },
 
         // Secondary colors - Accenture palette
         secondary: {
-            purple: '#8b5cf6',    // Accenture Purple for charts/data
-            purpleLight: '#a78bfa', // Light purple for gradients
+            purple: '#A100FF',    // Official Accenture Purple for charts/data
+            purpleLight: '#C2A3FF', // Light purple for gradients
             blue: '#3b82f6',       // Accenture Blue
             success: '#10b981',    // Success green
             warning: '#f59e0b',    // Warning amber
@@ -62,30 +62,30 @@ export const themeConfig = {
             secondary: '#6B7280',
             muted: '#9CA3AF',
             inverse: '#FFFFFF',   // White text for dark backgrounds
-            purple: '#8b5cf6',    // Accenture Purple
+            purple: '#A100FF',    // Official Accenture Purple
         },
     },
 
-    // Gradient definitions - Accenture Purple gradients
+    // Gradient definitions - Official Accenture Purple gradients
     gradients: {
         navyBlue: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-        purpleGlow: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-        purpleBlue: 'linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)',
+        purpleGlow: 'linear-gradient(135deg, #A100FF 0%, #7500C0 100%)',
+        purpleBlue: 'linear-gradient(135deg, #A100FF 0%, #3b82f6 100%)',
         darkCard: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
     },
 
-    // Shadow and glow effects - Accenture Purple
+    // Shadow and glow effects - Official Accenture Purple
     effects: {
-        purpleGlow: '0 0 20px rgba(139, 92, 246, 0.5)',
-        purpleGlowIntense: '0 0 40px rgba(139, 92, 246, 0.8)',
-        purpleShadow: '0 0 20px rgba(139, 92, 246, 0.3)',
+        purpleGlow: '0 0 20px rgba(161, 0, 255, 0.5)',
+        purpleGlowIntense: '0 0 40px rgba(161, 0, 255, 0.8)',
+        purpleShadow: '0 0 20px rgba(161, 0, 255, 0.3)',
         cardShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        cardShadowHover: '0 10px 15px -3px rgba(139, 92, 246, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        cardShadowHover: '0 10px 15px -3px rgba(161, 0, 255, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
     },
 
     typography: {
         fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            sans: ['Graphik', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
             mono: ['JetBrains Mono', 'Consolas', 'monospace'],
         },
         fontSize: {
@@ -123,17 +123,17 @@ export const themeConfig = {
     components: {
         button: {
             primary: {
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+                background: 'linear-gradient(135deg, #A100FF 0%, #7500C0 100%)',
                 color: '#FFFFFF',
-                hoverBackground: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)',
-                boxShadow: '0 4px 6px -1px rgba(139, 92, 246, 0.3), 0 2px 4px -1px rgba(139, 92, 246, 0.2)',
-                hoverBoxShadow: '0 10px 15px -3px rgba(139, 92, 246, 0.4), 0 4px 6px -2px rgba(139, 92, 246, 0.3)',
+                hoverBackground: 'linear-gradient(135deg, #7500C0 0%, #460073 100%)',
+                boxShadow: '0 4px 6px -1px rgba(161, 0, 255, 0.3), 0 2px 4px -1px rgba(161, 0, 255, 0.2)',
+                hoverBoxShadow: '0 10px 15px -3px rgba(161, 0, 255, 0.4), 0 4px 6px -2px rgba(161, 0, 255, 0.3)',
             },
             secondary: {
-                background: 'rgba(139, 92, 246, 0.1)',
-                color: '#8b5cf6',
-                border: '1px solid #8b5cf6',
-                hoverBackground: 'rgba(139, 92, 246, 0.2)',
+                background: 'rgba(161, 0, 255, 0.1)',
+                color: '#A100FF',
+                border: '1px solid #A100FF',
+                hoverBackground: 'rgba(161, 0, 255, 0.2)',
             },
         },
         card: {
@@ -143,7 +143,7 @@ export const themeConfig = {
             },
             dark: {
                 background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-                border: '1px solid rgba(139, 92, 246, 0.2)',
+                border: '1px solid rgba(161, 0, 255, 0.2)',
                 color: '#FFFFFF',
             },
         },

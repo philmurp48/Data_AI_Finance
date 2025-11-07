@@ -12,10 +12,10 @@
 ### **MANDATORY: Always use brand tokens and shared UI components**
 
 #### **Color Usage**
-- **Primary Brand Color:** MUST use `#8b5cf6` (Accenture Purple) for all primary actions and branding
+- **Primary Brand Color:** MUST use `#A100FF` (Official Accenture Purple) for all primary actions and branding
 - **Color Tokens:** MUST use predefined tokens from `branding/brand-tokens.json`
 - **Semantic Colors:** MUST use standard semantic colors (success: `#10b981`, warning: `#f59e0b`, danger: `#ef4444`)
-- **AI/Agent Colors:** MUST use agent purple (`#8b5cf6`) for all AI-related indicators
+- **AI/Agent Colors:** MUST use agent purple (`#A100FF`) for all AI-related indicators
 
 **✅ Correct:**
 ```tsx
@@ -229,7 +229,7 @@ import { CHART_COLORS } from "@/branding/ui";
 
 // MUST use brand colors for charts
 const chartConfig = {
-  colors: CHART_COLORS,  // [#8b5cf6, #3b82f6, #10b981, ...]
+  colors: CHART_COLORS,  // [#A100FF, #3b82f6, #10b981, ...]
 };
 ```
 
@@ -247,7 +247,7 @@ const chartConfig = {
 - **MUST** show agent involvement with `AgentBadge` component
 - **MUST** include confidence levels when available
 - **MUST** provide "How AI..." explanations for complex processes
-- **MUST** use agent purple color scheme (`#8b5cf6`)
+- **MUST** use agent purple color scheme (`#A100FF`)
 
 ### **Agent Badge Usage**
 ```tsx
@@ -373,7 +373,7 @@ import Image from "next/image";
 Before submitting code, ensure:
 
 ### **Brand Compliance**
-- [ ] Uses Accenture purple (`#8b5cf6`) for primary branding
+- [ ] Uses Accenture purple (`#A100FF`) for primary branding
 - [ ] Uses brand tokens from `branding/brand-tokens.json`
 - [ ] Uses shared components from `branding/ui/`
 - [ ] Follows writing style guidelines
