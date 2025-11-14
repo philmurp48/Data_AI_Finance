@@ -39,10 +39,10 @@ export default function LoginPage() {
             {/* Background effects */}
             <div className="absolute inset-0">
                 {/* Animated dots */}
-                <div className="absolute top-20 left-20 w-2 h-2 bg-cyan rounded-full animate-pulse"></div>
-                <div className="absolute top-40 right-40 w-2 h-2 bg-cyan rounded-full animate-pulse delay-100"></div>
-                <div className="absolute bottom-20 left-1/3 w-2 h-2 bg-cyan rounded-full animate-pulse delay-200"></div>
-                <div className="absolute bottom-40 right-20 w-2 h-2 bg-cyan rounded-full animate-pulse delay-300"></div>
+                <div className="absolute top-20 left-20 w-2 h-2 bg-cyan rounded-full animate-safari-pulse"></div>
+                <div className="absolute top-40 right-40 w-2 h-2 bg-cyan rounded-full animate-safari-pulse delay-100"></div>
+                <div className="absolute bottom-20 left-1/3 w-2 h-2 bg-cyan rounded-full animate-safari-pulse delay-200"></div>
+                <div className="absolute bottom-40 right-20 w-2 h-2 bg-cyan rounded-full animate-safari-pulse delay-300"></div>
 
                 {/* Gradient orbs */}
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-cyan opacity-10 rounded-full blur-3xl"></div>

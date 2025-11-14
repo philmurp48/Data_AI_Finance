@@ -263,3 +263,21 @@ body {
 .delay-300 {
     animation-delay: 300ms;
 }
+
+/* Safari-optimized pulse animation using transform instead of opacity */
+@keyframes safari-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-safari-pulse {
+    animation: safari-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    /* Force GPU acceleration for smoother animation in Safari */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+}

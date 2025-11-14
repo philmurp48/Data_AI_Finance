@@ -117,7 +117,7 @@ export default function ManagementReportingLayout({
                         {/* Menu Toggle Button */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className={`p-2 rounded-lg hover:bg-white/10 transition-all ${shouldPulse && !isMenuOpen ? 'animate-pulse bg-purple-500/20' : ''
+                            className={`p-2 rounded-lg hover:bg-white/10 transition-all ${shouldPulse && !isMenuOpen ? 'animate-safari-pulse bg-purple-500/20' : ''
                                 }`}
                             aria-label="Toggle menu"
                         >
