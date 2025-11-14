@@ -74,8 +74,7 @@
     --radius: 0.5rem;
 }
 
-/* Graphik Font Import */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Graphik Font Import - Removed duplicate Inter import (handled by Next.js) */
 
 /* Global styles */
 body {
@@ -139,9 +138,8 @@ body {
 }
 
 /* Remove excessive animations and color transitions */
-* {
-    transition-duration: 150ms;
-}
+/* REMOVED: Global transition on all elements causes Safari repaint issues */
+/* Instead, apply transitions only where needed via Tailwind classes */
 
 /* Scrollbar styling for professional look */
 ::-webkit-scrollbar {
@@ -307,13 +305,13 @@ body {
     transform: translateZ(0);
 }
 
-/* Optimize transitions for Safari */
+/* Optimize font rendering for Safari */
 @media not all and (min-resolution:.001dpcm) {
     @supports (-webkit-appearance:none) {
-        /* Safari-specific: Reduce transition complexity */
-        * {
-            -webkit-transform: translateZ(0);
+        /* Safari-specific: Optimize font rendering only */
+        body {
             -webkit-font-smoothing: subpixel-antialiased;
+            -moz-osx-font-smoothing: auto;
         }
     }
 }
