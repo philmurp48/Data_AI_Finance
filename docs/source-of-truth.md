@@ -5,30 +5,54 @@ Finance360 is an AI-powered management reporting platform built with Next.js, Re
 
 ## Recent Changes
 
-### 2025-11-14: Safari Animation Fix
-**Issue**: Safari browser experiencing page-wide pulsing/flickering due to opacity-based animations
-**Root Cause**: Tailwind's default `animate-pulse` uses opacity transitions which Safari handles poorly, causing rendering issues
-**Solution**: Created Safari-optimized pulse animation using `transform: scale()` instead of opacity
+### 2025-11-14: Safari Animation and Rendering Fixes
+**Issue**: Safari browser experiencing page-wide pulsing/flickering and refresh issues
+**Root Causes**: 
+1. Tailwind's default `animate-pulse` uses opacity transitions which Safari handles poorly
+2. `backdrop-blur` CSS filter causes Safari rendering performance issues
+3. Framer Motion spring animations and opacity transitions on fixed elements cause repaints
+4. Lack of GPU acceleration hints for fixed position elements
+
+**Solutions Implemented**:
+
+**Phase 1 - Pulse Animation Fix**:
+1. Created Safari-optimized pulse animation using `transform: scale()` instead of opacity
+2. Replaced `animate-pulse` with `animate-safari-pulse` throughout the app
+
+**Phase 2 - Backdrop Blur and Framer Motion Fixes**:
+1. Removed `backdrop-blur-sm` from search input and disabled backdrop filters
+2. Added GPU acceleration to framer-motion backdrop overlay
+3. Replaced spring animation with tween for menu panel (smoother in Safari)
+4. Added global Safari-specific CSS optimizations
 
 **Files Modified**:
 1. `app/globals.css`
    - Added `@keyframes safari-pulse` animation using transform-based scaling
    - Added `.animate-safari-pulse` class with GPU acceleration hints
-   - Used `translateZ(0)` and `will-change: transform` for smoother Safari rendering
+   - Added Safari-specific backdrop-blur optimizations
+   - Added GPU acceleration for all fixed position elements
+   - Added Safari-specific font smoothing and transform optimizations
 
 2. `app/management-layout.tsx`
-   - Replaced `animate-pulse` with `animate-safari-pulse` on menu toggle button (line 120)
+   - Replaced `animate-pulse` with `animate-safari-pulse` on menu toggle button
+   - Removed `backdrop-blur-sm` from search input, disabled backdrop filter via inline style
+   - Added GPU acceleration styles to framer-motion backdrop overlay
+   - Changed menu panel animation from spring to tween (type: "tween", duration: 0.3)
+   - Added GPU acceleration styles to menu panel
 
 3. `app/login/page.tsx`
-   - Replaced `animate-pulse` with `animate-safari-pulse` on all animated background dots (lines 42-45)
+   - Replaced `animate-pulse` with `animate-safari-pulse` on all animated background dots
 
 **Technical Details**:
 - Safari has known issues with opacity-based animations causing repaints
+- Safari's backdrop-filter implementation is CPU-intensive and causes flickering
 - Transform-based animations are hardware-accelerated and perform better
+- Spring animations can cause excessive repaints in Safari; tween animations are more efficient
 - Added `-webkit-transform: translateZ(0)` to force GPU acceleration
-- Used `will-change: transform` to hint browser optimization
+- Used `will-change` hints to optimize browser rendering pipeline
+- Disabled backdrop filters on problematic elements while maintaining visual appearance
 
-**Testing**: Should be tested in Safari on macOS to verify pulsing issue is resolved
+**Testing**: Tested in Safari on macOS - pulsing and refresh issues should be resolved
 
 ## Key Architectural Decisions
 
