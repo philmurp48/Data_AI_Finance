@@ -143,7 +143,8 @@ export default function ManagementReportingLayout({
                                     <input
                                         type="text"
                                         placeholder="Ask me anything about your business..."
-                                        className="w-full pl-12 pr-4 py-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-l-full text-sm text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        className="w-full pl-12 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-l-full text-sm text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        style={{ WebkitBackdropFilter: 'none', backdropFilter: 'none' }}
                                     />
                                 </div>
                                 <button className="px-8 py-2.5 bg-purple-gradient text-white font-medium rounded-r-full hover:shadow-lg hover:shadow-purple-500/50 transition-all text-sm whitespace-nowrap border border-purple-500">
@@ -185,6 +186,11 @@ export default function ManagementReportingLayout({
                             exit={{ opacity: 0 }}
                             onClick={() => setIsMenuOpen(false)}
                             className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                            style={{ 
+                                WebkitTransform: 'translateZ(0)',
+                                transform: 'translateZ(0)',
+                                willChange: 'opacity'
+                            }}
                         />
 
                         {/* Menu Panel */}
@@ -192,8 +198,13 @@ export default function ManagementReportingLayout({
                             initial={{ x: -320 }}
                             animate={{ x: 0 }}
                             exit={{ x: -320 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
                             className="fixed left-0 top-0 bottom-0 w-80 bg-navy-gradient shadow-2xl z-50 flex flex-col border-r border-gray-700"
+                            style={{ 
+                                WebkitTransform: 'translateZ(0)',
+                                transform: 'translateZ(0)',
+                                willChange: 'transform'
+                            }}
                         >
                             {/* Menu Header */}
                             <div className="p-6 border-b border-gray-700">

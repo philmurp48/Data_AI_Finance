@@ -281,3 +281,39 @@ body {
     transform: translateZ(0);
     will-change: transform;
 }
+
+/* Safari-specific optimizations to prevent pulsing/flickering */
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    /* Optimize backdrop-blur for Safari - reduce blur amount for better performance */
+    .backdrop-blur-sm {
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+    }
+    
+    .backdrop-blur {
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+    }
+    
+    .backdrop-blur-lg {
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+    }
+}
+
+/* Force GPU acceleration for fixed position elements in Safari */
+.fixed {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Optimize transitions for Safari */
+@media not all and (min-resolution:.001dpcm) {
+    @supports (-webkit-appearance:none) {
+        /* Safari-specific: Reduce transition complexity */
+        * {
+            -webkit-transform: translateZ(0);
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+    }
+}
