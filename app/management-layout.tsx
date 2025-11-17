@@ -15,6 +15,7 @@ import {
     TrendingUp,
     X
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -112,7 +113,7 @@ export default function ManagementReportingLayout({
             {/* Header */}
             <div className="bg-navy-gradient border-b border-gray-700">
                 <div className="flex items-center justify-between h-16 px-4">
-                    {/* Left side - Menu toggle and Platform Title */}
+                    {/* Left side - Menu toggle, Logo, and Platform Title */}
                     <div className="flex items-center space-x-4 flex-1">
                         {/* Menu Toggle Button */}
                         <button
@@ -128,10 +129,26 @@ export default function ManagementReportingLayout({
                             )}
                         </button>
 
-                        {/* Platform Title */}
-                        <h1 className="text-lg font-semibold text-white">
-                            Finance360
-                        </h1>
+                        {/* Accenture Logo */}
+                        <div className="relative h-10 w-10 flex-shrink-0">
+                            <Image
+                                src="/images/Accenture Logo.png"
+                                alt="Accenture Logo"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
+
+                        {/* Platform Title and Subtitle */}
+                        <div className="flex flex-col">
+                            <h1 className="text-lg font-bold text-white leading-tight">
+                                Finance360
+                            </h1>
+                            <p className="text-xs text-purple-400 font-medium leading-tight">
+                                AI-Powered Management Reporting
+                            </p>
+                        </div>
                     </div>
 
                     {/* Center - Search Bar (hidden on home page) */}

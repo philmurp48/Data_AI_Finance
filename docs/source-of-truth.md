@@ -5,6 +5,27 @@ Finance360 is an AI-powered management reporting platform built with Next.js, Re
 
 ## Recent Changes
 
+### 2025-11-17: Header Branding Update
+**Change**: Updated header layout to match Controller AI Workbench branding
+**Implementation**:
+1. Added Accenture logo to header (positioned between hamburger menu and title)
+2. Updated title to "Finance360" with bold white text
+3. Added subtitle "AI-Powered Management Reporting" in purple-400 color
+4. Organized header elements: hamburger menu → Accenture logo → title/subtitle stack
+
+**Files Modified**:
+1. `app/management-layout.tsx`
+   - Added Image import from next/image
+   - Added Accenture logo display (h-10 w-10, object-contain)
+   - Restructured title section to include two-line layout with title and subtitle
+   - Used purple-400 color for subtitle to match Accenture brand purple
+
+**Visual Design**:
+- Logo: 40x40px, flex-shrink-0 to prevent squishing
+- Title: text-lg, font-bold, white color, leading-tight
+- Subtitle: text-xs, purple-400, font-medium, leading-tight
+- Maintains consistent spacing with space-x-4 between elements
+
 ### 2025-11-14: Safari Animation and Rendering Fixes
 **Issue**: Safari browser experiencing page-wide pulsing/flickering and refresh issues
 **Root Causes**: 
