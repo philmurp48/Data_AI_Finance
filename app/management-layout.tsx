@@ -226,7 +226,18 @@ export default function ManagementReportingLayout({
                             {/* Menu Header */}
                             <div className="p-6 border-b border-gray-700">
                                 <div className="flex items-center justify-between mb-6">
-                                    <h2 className="text-xl font-bold text-white">Finance360</h2>
+                                    <div className="flex items-center space-x-3">
+                                        {/* Accenture Logo */}
+                                        <div className="relative h-8 w-8 flex-shrink-0">
+                                            <Image
+                                                src="/images/Accenture Logo.png"
+                                                alt="Accenture Logo"
+                                                fill
+                                                className="object-contain"
+                                            />
+                                        </div>
+                                        <h2 className="text-xl font-bold text-white">Finance360</h2>
+                                    </div>
                                     <button
                                         onClick={() => setIsMenuOpen(false)}
                                         className="p-2 hover:bg-white/10 rounded-lg transition-colors"
