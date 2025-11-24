@@ -18,9 +18,11 @@ Finance360 is an AI-powered management reporting platform built with Next.js, Re
 1. `app/login/page.tsx`
    - Added `Image` import from 'next/image'
    - Added logo section above title with centered flex layout
-   - Logo path: `/images/Accenture Logo.png`
+   - Logo path: `/images/accenture-logo.png` (URL-friendly filename without spaces)
    - Logo dimensions: 200x200px (increased from 120x120px for better visibility)
    - Added `priority` prop to Image component for faster loading
+2. `public/images/accenture-logo.png`
+   - Created URL-friendly copy of logo file (no spaces in filename for better deployment compatibility)
 
 ### 2025-11-24: Simplified Authentication
 **Change**: Updated login to only require password (removed username field)
