@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { AlertCircle, Eye, EyeOff, Lock } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -57,11 +58,15 @@ export default function LoginPage() {
             >
                 {/* Logo */}
                 <div className="flex justify-center mb-12">
-                    <img
-                        src="/logo.png"
-                        alt="Logo"
-                        className="h-32 w-32 object-contain"
-                    />
+                    <div className="relative h-32 w-32 flex-shrink-0">
+                        <Image
+                            src="/logo.png"
+                            alt="Accenture Logo"
+                            fill
+                            className="object-contain"
+                            priority
+                        />
+                    </div>
                 </div>
 
                 {/* Logo and title */}
