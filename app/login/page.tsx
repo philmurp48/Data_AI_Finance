@@ -55,7 +55,7 @@ export default function LoginPage() {
 
                 {/* Header Text */}
                 <div className="text-center space-y-6">
-                    <h1 className="text-5xl font-bold text-white mb-2">Order To Cash</h1>
+                    <h1 className="text-5xl font-bold text-white mb-2">Finance360</h1>
                     <p className="text-xl font-medium text-[#A100FF]">Embrace the power of unified data</p>
                 </div>
 
