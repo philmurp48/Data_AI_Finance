@@ -145,7 +145,7 @@ export default function LoginPage() {
                 {/* Footer */}
                 <div className="mt-8 text-center">
                     <p className="text-gray-500 text-xs">
-                        © 2025 Finance360. All rights reserved.
+                        © 2025 Accenture. All rights reserved.
                     </p>
                 </div>
             </motion.div>
