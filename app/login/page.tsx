@@ -1,13 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { AlertCircle, Eye, EyeOff, Lock, User } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginPage() {
     const router = useRouter();
-    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
@@ -21,7 +20,7 @@ export default function LoginPage() {
         // Simulate login delay
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        if (username === 'ACNFinance' && password === 'Seethefuture') {
+        if (password === 'Seethefuture') {
             // Set authentication cookie
             document.cookie = 'isAuthenticated=true; path=/; max-age=86400'; // 24 hours
             // Set flag to show disclaimer after login
@@ -29,7 +28,7 @@ export default function LoginPage() {
             router.push('/');
             router.refresh();
         } else {
-            setError('Invalid username or password');
+            setError('Invalid password');
             setIsLoading(false);
         }
     };
@@ -67,21 +66,6 @@ export default function LoginPage() {
                     <h2 className="text-2xl font-semibold text-white mb-6 text-center">Welcome Back</h2>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* Username field */}
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <User className="h-5 w-5 text-cyan" />
-                            </div>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className="w-full pl-10 pr-3 py-3 bg-white/10 border border-cyan/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan focus:border-transparent transition-all"
-                                placeholder="Username"
-                                required
-                            />
-                        </div>
-
                         {/* Password field */}
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
