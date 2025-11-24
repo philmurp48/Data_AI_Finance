@@ -132,7 +132,7 @@ export default function ManagementReportingLayout({
                         {/* Accenture Logo */}
                         <div className="relative h-10 w-10 flex-shrink-0">
                             <Image
-                                src="/images/Accenture Logo.png"
+                                src="/accenture-logo.png"
                                 alt="Accenture Logo"
                                 fill
                                 className="object-contain"
@@ -230,7 +230,7 @@ export default function ManagementReportingLayout({
                                         {/* Accenture Logo */}
                                         <div className="relative h-8 w-8 flex-shrink-0">
                                             <Image
-                                                src="/images/Accenture Logo.png"
+                                                src="/accenture-logo.png"
                                                 alt="Accenture Logo"
                                                 fill
                                                 className="object-contain"
