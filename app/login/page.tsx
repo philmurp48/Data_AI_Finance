@@ -35,34 +35,17 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-navy-gradient flex items-center justify-center relative overflow-hidden">
-            {/* Background effects */}
-            <div className="absolute inset-0">
-                {/* Animated dots */}
-                <div className="absolute top-20 left-20 w-2 h-2 bg-cyan rounded-full animate-safari-pulse"></div>
-                <div className="absolute top-40 right-40 w-2 h-2 bg-cyan rounded-full animate-safari-pulse delay-100"></div>
-                <div className="absolute bottom-20 left-1/3 w-2 h-2 bg-cyan rounded-full animate-safari-pulse delay-200"></div>
-                <div className="absolute bottom-40 right-20 w-2 h-2 bg-cyan rounded-full animate-safari-pulse delay-300"></div>
-
-                {/* Gradient orbs */}
-                <div className="absolute -top-40 -right-40 w-80 h-80 bg-cyan opacity-10 rounded-full blur-3xl"></div>
-                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 opacity-10 rounded-full blur-3xl"></div>
-            </div>
-
-            {/* Login card */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="relative z-10 w-full max-w-md px-8"
-            >
+        <div className="min-h-screen bg-[#1a1d2e] flex items-center justify-center p-4">
+            {/* Login container */}
+            <div className="w-full max-w-md space-y-8">
                 {/* Logo */}
-                <div className="flex justify-center mb-12">
-                    <div className="relative h-32 w-32 flex-shrink-0">
+                <div className="flex justify-center mb-8">
+                    <div className="relative h-24 w-auto">
                         <Image
                             src="/logo.png"
                             alt="Accenture Logo"
-                            fill
+                            width={96}
+                            height={96}
                             className="object-contain"
                             priority
                             unoptimized
@@ -70,64 +53,59 @@ export default function LoginPage() {
                     </div>
                 </div>
 
-                {/* Logo and title */}
-                <div className="text-center mb-8">
-                    <h1 className="text-5xl font-bold text-white mb-2">Finance360</h1>
-                    <p className="text-cyan text-lg">Embrace the power of unified data</p>
+                {/* Header Text */}
+                <div className="text-center space-y-6">
+                    <h1 className="text-5xl font-bold text-white mb-2">Order To Cash</h1>
+                    <p className="text-xl font-medium text-[#A100FF]">Embrace the power of unified data</p>
                 </div>
 
-                {/* Login form */}
-                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-cyan/20">
-                    <h2 className="text-2xl font-semibold text-white mb-6 text-center">Welcome Back</h2>
+                {/* Login Card */}
+                <div className="bg-[#2a2d3e] rounded-2xl border border-gray-700 p-8 shadow-2xl">
+                    <h2 className="text-3xl font-bold text-white text-center mb-8">Welcome Back</h2>
 
-                    <form onSubmit={handleSubmit} className="space-y-5">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Password field */}
                         <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <Lock className="h-5 w-5 text-cyan" />
+                            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                                <Lock className="h-5 w-5 text-[#A100FF]" />
                             </div>
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-10 pr-10 py-3 bg-white/10 border border-cyan/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan focus:border-transparent transition-all"
+                                className="w-full pl-12 pr-12 py-4 bg-[#363a4f] border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#A100FF]/20 focus:border-[#A100FF] transition-all"
                                 placeholder="Password"
                                 required
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                className="absolute inset-y-0 right-4 flex items-center"
                             >
                                 {showPassword ? (
-                                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-cyan transition-colors" />
+                                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-white transition-colors" />
                                 ) : (
-                                    <Eye className="h-5 w-5 text-gray-400 hover:text-cyan transition-colors" />
+                                    <Eye className="h-5 w-5 text-gray-400 hover:text-white transition-colors" />
                                 )}
                             </button>
                         </div>
 
                         {/* Error message */}
                         {error && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="flex items-center space-x-2 text-red-400 text-sm"
-                            >
-                                <AlertCircle className="h-4 w-4" />
-                                <span>{error}</span>
-                            </motion.div>
+                            <div className="bg-red-900/20 border border-red-800 rounded-lg p-3">
+                                <p className="text-red-400 text-sm">{error}</p>
+                            </div>
                         )}
 
                         {/* Submit button */}
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-3 bg-cyan-gradient text-navy-900 font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+                            className="w-full py-4 bg-[#A100FF] hover:bg-[#8800DD] text-white font-semibold rounded-xl shadow-lg shadow-[#A100FF]/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoading ? (
                                 <div className="flex items-center justify-center">
-                                    <div className="w-5 h-5 border-2 border-navy-900 border-t-transparent rounded-full animate-spin"></div>
+                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                                 </div>
                             ) : (
                                 'Sign In'
@@ -143,12 +121,12 @@ export default function LoginPage() {
                 </div>
 
                 {/* Footer */}
-                <div className="mt-8 text-center">
-                    <p className="text-gray-500 text-xs">
+                <div className="text-center">
+                    <p className="text-gray-500 text-sm">
                         © 2025 Accenture. All rights reserved.
                     </p>
                 </div>
-            </motion.div>
+            </div>
         </div>
     );
 } 
