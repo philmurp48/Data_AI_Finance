@@ -58,14 +58,13 @@ export default function LoginPage() {
             >
                 {/* Accenture Logo */}
                 <div className="flex justify-center mb-12">
-                    <div className="relative h-32 w-32">
+                    <div className="relative h-32 w-32 flex-shrink-0">
                         <Image
                             src="/images/Accenture Logo.png"
                             alt="Accenture Logo"
                             fill
                             className="object-contain"
                             priority
-                            unoptimized
                         />
                     </div>
                 </div>
