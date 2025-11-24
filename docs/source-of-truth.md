@@ -5,16 +5,15 @@ Finance360 is an AI-powered management reporting platform built with Next.js, Re
 
 ## Recent Changes
 
-### 2025-11-24: Add Purple Chevron Logo to Login Page
-**Change**: Added the purple ">" chevron SVG logo to the login page (matching the header)
+### 2025-11-24: Add Logo to Login Page (Final)
+**Change**: Added the same logo image from header to login page
 **Implementation**:
-1. Created inline SVG with purple gradient chevron
-2. Matches the visual style from the header
-3. Uses Accenture purple gradient (#A100FF to #7500C0)
-4. Sized at 120x120px with drop shadow
+1. Uses `/logo.png` (same as header)
+2. Sized at 128x128px (h-32 w-32)
+3. Centered above the Finance360 title
 
 **Files Modified**:
-1. `app/login/page.tsx` - Added SVG chevron logo above title
+1. `app/login/page.tsx` - Added logo image above title
 
 ### 2025-11-24: Final Logo Standardization
 **Change**: Simplified logo path to root `/logo.png` to resolve all potential path/caching issues

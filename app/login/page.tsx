@@ -56,27 +56,17 @@ export default function LoginPage() {
                 transition={{ duration: 0.5 }}
                 className="relative z-10 w-full max-w-md px-8"
             >
-                {/* Purple Chevron Logo */}
+                {/* Logo */}
                 <div className="flex justify-center mb-12">
-                    <svg 
-                        width="120" 
-                        height="120" 
-                        viewBox="0 0 100 100" 
-                        fill="none" 
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="drop-shadow-2xl"
-                    >
-                        <path 
-                            d="M20 15 L50 50 L20 85 L35 85 L65 50 L35 15 Z" 
-                            fill="url(#purpleGradient)"
+                    <div className="relative h-32 w-32 flex-shrink-0">
+                        <Image
+                            src="/logo.png"
+                            alt="Logo"
+                            fill
+                            className="object-contain"
+                            priority
                         />
-                        <defs>
-                            <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#A100FF" />
-                                <stop offset="100%" stopColor="#7500C0" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
+                    </div>
                 </div>
 
                 {/* Logo and title */}
