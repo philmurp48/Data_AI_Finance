@@ -24,7 +24,7 @@ export interface BrandHeaderProps {
 export function BrandHeader({
   title = "Controller AI Workbench",
   subtitle = "AI-Powered R2R Platform",
-  logoSrc = "/accenture-logo.png",
+  logoSrc = "/logo.png",
   showSearch = true,
   showNotifications = true,
   showUserMenu = true,
