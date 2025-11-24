@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { AlertCircle, Eye, EyeOff, Lock } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -55,6 +56,17 @@ export default function LoginPage() {
                 transition={{ duration: 0.5 }}
                 className="relative z-10 w-full max-w-md px-8"
             >
+                {/* Accenture Logo */}
+                <div className="flex justify-center mb-8">
+                    <Image
+                        src="/images/Accenture Logo.png"
+                        alt="Accenture"
+                        width={120}
+                        height={120}
+                        className="object-contain"
+                    />
+                </div>
+
                 {/* Logo and title */}
                 <div className="text-center mb-8">
                     <h1 className="text-5xl font-bold text-white mb-2">Finance360</h1>
