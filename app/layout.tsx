@@ -31,11 +31,11 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://finance360.vercel.app'),
+  metadataBase: new URL('https://data-ai-finance.vercel.app'),
   openGraph: {
     title: 'Data_AI_Finance360 - Management Reporting Platform',
     description: 'Enterprise financial management platform with real-time reporting and AI-powered insights.',
-    url: 'https://finance360.vercel.app',
+    url: 'https://data-ai-finance.vercel.app',
     siteName: 'Data_AI_Finance360',
     images: [
       {
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   alternates: {
-    canonical: 'https://finance360.vercel.app',
+    canonical: 'https://data-ai-finance.vercel.app',
   }
 }
 
@@ -119,7 +119,7 @@ export default function RootLayout({
               author: {
                 '@type': 'Organization',
                 name: 'Data_AI_Finance360',
-                url: 'https://finance360.vercel.app'
+                url: 'https://data-ai-finance.vercel.app'
               }
             })
           }}
