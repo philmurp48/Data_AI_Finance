@@ -58,18 +58,18 @@ export async function parseDriverTreeExcel(file: File): Promise<ExcelDriverTreeD
                 const workbook = XLSX.read(data, { type: 'binary' });
                 
                 // Parse Driver Tree tab
-                const driverTreeSheet = workbook.Sheets['Driver Tree'] || workbook.Sheets[workbook.SheetNames.find(name => name.toLowerCase().includes('driver')) || ''];
+                const driverTreeSheet = workbook.Sheets['Driver Tree'] || workbook.Sheets[workbook.SheetNames.find((name: string) => name.toLowerCase().includes('driver')) || ''];
                 if (!driverTreeSheet) {
                     reject(new Error('Driver Tree sheet not found. Please ensure a sheet named "Driver Tree" exists.'));
                     return;
                 }
 
                 // Parse Accounting Fact tab
-                const accountingSheet = workbook.Sheets['Accounting Fact'] || workbook.Sheets[workbook.SheetNames.find(name => name.toLowerCase().includes('accounting')) || ''];
+                const accountingSheet = workbook.Sheets['Accounting Fact'] || workbook.Sheets[workbook.SheetNames.find((name: string) => name.toLowerCase().includes('accounting')) || ''];
                 
                 // Parse Fee Rate Fact tab (preferred) or Rate Fact tab
-                const feeRateFactSheet = workbook.Sheets['Fee Rate Fact'] || workbook.Sheets[workbook.SheetNames.find(name => name.toLowerCase().includes('fee rate')) || ''];
-                const rateFactSheet = workbook.Sheets['Rate Fact'] || workbook.Sheets[workbook.SheetNames.find(name => name.toLowerCase().includes('rate fact') && !name.toLowerCase().includes('fee')) || ''];
+                const feeRateFactSheet = workbook.Sheets['Fee Rate Fact'] || workbook.Sheets[workbook.SheetNames.find((name: string) => name.toLowerCase().includes('fee rate')) || ''];
+                const rateFactSheet = workbook.Sheets['Rate Fact'] || workbook.Sheets[workbook.SheetNames.find((name: string) => name.toLowerCase().includes('rate fact') && !name.toLowerCase().includes('fee')) || ''];
 
                 // Extract driver tree structure
                 const tree = parseDriverTreeSheet(driverTreeSheet, XLSX);
@@ -187,7 +187,7 @@ function parseLevelColumns(data: any[][]): DriverTreeNode[] {
             const nodeKey = `${nodeName}|${level}|${parentNode?.id || 'root'}`;
             
             // Check if we've already created this node
-            let currentNode = nodeMap.get(nodeKey);
+            let currentNode: DriverTreeNode | undefined = nodeMap.get(nodeKey);
             
             if (!currentNode) {
                 // Create new node
@@ -196,7 +196,7 @@ function parseLevelColumns(data: any[][]): DriverTreeNode[] {
                     id: nodeId,
                     name: nodeName,
                     level: level,
-                    parentId: parentNode?.id,
+                    parentId: parentNode ? parentNode.id : undefined,
                     children: []
                 };
                 nodeMap.set(nodeKey, currentNode);
@@ -209,7 +209,7 @@ function parseLevelColumns(data: any[][]): DriverTreeNode[] {
                     tree.push(currentNode);
                 }
             }
-
+            
             parentNode = currentNode;
         }
     }
@@ -813,10 +813,11 @@ function mapAmountsToTree(
     rateFacts: Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>
 ): void {
     // Check if rateFacts is the new Fee Rate Fact structure
+    const rateFactsValues = Array.from(rateFacts.values() as any);
     const isFeeRateFactStructure = rateFacts.size > 0 && 
-        Array.from(rateFacts.values())[0] && 
-        typeof Array.from(rateFacts.values())[0] === 'object' && 
-        'feeRate' in (Array.from(rateFacts.values())[0] as any);
+        rateFactsValues[0] && 
+        typeof rateFactsValues[0] === 'object' && 
+        'feeRate' in rateFactsValues[0];
     // Map amounts to all nodes (not just leaf nodes) to populate "Increase Rates" section
     const mapToNode = (node: DriverTreeNode) => {
         const isLeaf = !node.children || node.children.length === 0;

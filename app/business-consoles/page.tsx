@@ -15,7 +15,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import ExcelUpload from '@/components/ExcelUpload';
-import { ExcelDriverTreeData, DriverTreeNode } from '@/lib/excel-parser';
+import { ExcelDriverTreeData, DriverTreeNode, PeriodData } from '@/lib/excel-parser';
 
 // Category definitions
 const categories = [
@@ -118,7 +118,7 @@ export default function BusinessConsolesPage() {
                         const restoredData: ExcelDriverTreeData = {
                             tree: parsed.tree || [],
                             accountingFacts: new Map(parsed.accountingFacts || []),
-                            rateFacts: new Map(parsed.rateFacts || [])
+                            rateFacts: new Map(parsed.rateFacts || []) as Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>
                         };
                         setExcelData(restoredData);
                         return; // Use server data, skip localStorage
@@ -136,7 +136,7 @@ export default function BusinessConsolesPage() {
                     const restoredData: ExcelDriverTreeData = {
                         tree: parsed.tree || [],
                         accountingFacts: new Map(parsed.accountingFacts || []),
-                        rateFacts: new Map(parsed.rateFacts || [])
+                        rateFacts: new Map(parsed.rateFacts || []) as Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>
                     };
                     setExcelData(restoredData);
                 }
@@ -156,7 +156,7 @@ export default function BusinessConsolesPage() {
             const dataToSave = {
                 tree: excelData.tree,
                 accountingFacts: Array.from(excelData.accountingFacts.entries()),
-                rateFacts: Array.from(excelData.rateFacts.entries())
+                rateFacts: Array.from(excelData.rateFacts.entries() as any)
             };
 
             // Save to server (shared across all users)
