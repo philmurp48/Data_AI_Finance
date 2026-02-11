@@ -1,6 +1,6 @@
-# Finance360 - Unified Financial Intelligence Platform
+# Data_AI_Finance360 - Unified Financial Intelligence Platform
 
-Finance360 is a modern financial reporting and analytics platform that provides real-time insights, automated reporting, and AI-driven analysis for enterprise finance teams.
+Data_AI_Finance360 is a modern financial reporting and analytics platform that provides real-time insights, automated reporting, and AI-driven analysis for enterprise finance teams.
 
 ## Features
 
@@ -21,8 +21,8 @@ Finance360 is a modern financial reporting and analytics platform that provides 
 
 ```bash
 # Clone the repository
-git clone https://github.com/mikearonapi/finance360-platform.git
-cd finance360-platform
+git clone https://github.com/mikearonaccenture/ACN-Finance360.git Data_AI_Finance360
+cd Data_AI_Finance360
 
 # Install dependencies
 npm install
@@ -35,11 +35,13 @@ Visit [http://localhost:3001](http://localhost:3001) to see the application.
 
 ### Deployment
 
-#### Deploy to Vercel (Recommended)
+**📖 For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)**
+
+#### Quick Deploy to Vercel (Recommended)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mikearonapi/finance360-platform)
 
-Or manually:
+**Or manually:**
 
 ```bash
 # Build for production
@@ -49,13 +51,18 @@ npm run build
 npx vercel --prod
 ```
 
+**Before deploying, check [DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)**
+
 #### Other Platforms
 
 The application can be deployed to any platform that supports Next.js:
+- **Vercel** (Recommended - see [DEPLOYMENT.md](./DEPLOYMENT.md))
 - Netlify
 - Railway
 - Render
 - AWS Amplify
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions for all platforms.
 
 ## Technology Stack
 
@@ -116,7 +123,7 @@ Create a `.env.local` file in the root directory:
 
 ```env
 # Application Configuration
-NEXT_PUBLIC_APP_NAME=Finance360
+NEXT_PUBLIC_APP_NAME=Data_AI_Finance360
 NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 # API Configuration (optional)
