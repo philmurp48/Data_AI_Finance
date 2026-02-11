@@ -121,6 +121,11 @@ export default function BusinessConsolesPage() {
                             rateFacts: new Map(parsed.rateFacts || []) as Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>
                         };
                         setExcelData(restoredData);
+                        
+                        // Expand to level 3 by default
+                        const expanded = expandToLevel3(restoredData.tree);
+                        setExpandedDrivers(expanded);
+                        
                         return; // Use server data, skip localStorage
                     }
                 }
@@ -139,6 +144,10 @@ export default function BusinessConsolesPage() {
                         rateFacts: new Map(parsed.rateFacts || []) as Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>
                     };
                     setExcelData(restoredData);
+                    
+                    // Expand to level 3 by default
+                    const expanded = expandToLevel3(restoredData.tree);
+                    setExpandedDrivers(expanded);
                 }
             } catch (error) {
                 console.error('Failed to load Excel data from localStorage:', error);
@@ -180,12 +189,35 @@ export default function BusinessConsolesPage() {
         }
     }, [excelData]);
 
+    // Expand all nodes up to level 3
+    const expandToLevel3 = (nodes: DriverTreeNode[], parentIndex: string = '', expandedSet: Set<string> = new Set()): Set<string> => {
+        nodes.forEach((node) => {
+            const nodeIndex = parentIndex ? `${parentIndex}-${node.id}` : node.id;
+            
+            // Expand if level is 3 or less
+            if (node.level <= 3) {
+                expandedSet.add(nodeIndex);
+                
+                // Recursively expand children
+                if (node.children && node.children.length > 0) {
+                    expandToLevel3(node.children, nodeIndex, expandedSet);
+                }
+            }
+        });
+        
+        return expandedSet;
+    };
+
     // Handle Excel data loaded - this will trigger the save effect
     const handleExcelDataLoaded = (data: ExcelDriverTreeData) => {
         setExcelData(data);
         // Clear What If results when new data is loaded
         setWhatIfPercentages(new Map());
         setWhatIfResults(new Map());
+        
+        // Expand to level 3 by default
+        const expanded = expandToLevel3(data.tree);
+        setExpandedDrivers(expanded);
     };
 
     // Filter consoles based on category and search
