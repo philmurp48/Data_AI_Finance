@@ -18,6 +18,18 @@ const nextConfig = {
     poweredByHeader: false,
     reactStrictMode: true,
     swcMinify: true,
+    // Configure webpack for xlsx library
+    webpack: (config, { isServer }) => {
+        if (!isServer) {
+            config.resolve.fallback = {
+                ...config.resolve.fallback,
+                fs: false,
+                path: false,
+                crypto: false,
+            };
+        }
+        return config;
+    },
 }
 
 module.exports = nextConfig
