@@ -21,6 +21,40 @@ export interface BusinessConsole {
 
 export const businessConsoles: BusinessConsole[] = [
     {
+        id: 'product-mix',
+        title: 'Product Mix',
+        objective: 'Understand the market and demand for products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
+        description: 'Financial results by Product Segment',
+        icon: Package,
+        bgColor: 'bg-purple-50',
+        iconColor: 'text-purple-700',
+        borderColor: 'border-purple-200',
+        metrics: [],
+        status: 'Coming Soon',
+        keyDrivers: [
+            {
+                name: 'Product Portfolio Strategy',
+                subDrivers: [
+                    'EV',
+                    'ICE',
+                    'Marketing Division, Brand, Nameplate and Trim Portfolio Strategies',
+                    'Parts + CPC (Product code for Sales Orders)',
+                    'Regulations'
+                ]
+            },
+            {
+                name: 'Product Development',
+                subDrivers: [
+                    'New, Tophat and Minor Program Vehicle Launches',
+                    'Volume Contribution of Launched Vehicles (New, Tophat, Minor)',
+                    'Annual Volume Plan',
+                    'Monthly Forecasting',
+                    'US SAAR'
+                ]
+            }
+        ]
+    },
+    {
         id: 'market-demand',
         title: 'Market & Demand',
         objective: 'Understand the market and demand for products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
@@ -90,43 +124,6 @@ export const businessConsoles: BusinessConsole[] = [
                     'Partner Manufacturers',
                     '3PL Product Development',
                     'Manufacturer'
-                ]
-            }
-        ]
-    },
-    {
-        id: 'product-mix',
-        title: 'Product Mix',
-        objective: 'Understand the market and demand for products which, in turn, informs the portfolio and pricing strategies to achieve volume and market share objectives.',
-        description: 'Optimizes product portfolio strategy across EV/ICE divisions, manages vehicle launches, tracks volume contributions, and aligns annual planning with market demands',
-        icon: Package,
-        bgColor: 'bg-purple-50',
-        iconColor: 'text-purple-700',
-        borderColor: 'border-purple-200',
-        metrics: [
-            { label: 'Model Mix %', value: '42%', change: 2.1, trend: 'up' },
-            { label: 'Launch Success Rate', value: '87%', change: 5.2, trend: 'up' }
-        ],
-        status: 'Coming Soon',
-        keyDrivers: [
-            {
-                name: 'Product Portfolio Strategy',
-                subDrivers: [
-                    'EV',
-                    'ICE',
-                    'Marketing Division, Brand, Nameplate and Trim Portfolio Strategies',
-                    'Parts + CPC (Product code for Sales Orders)',
-                    'Regulations'
-                ]
-            },
-            {
-                name: 'Product Development',
-                subDrivers: [
-                    'New, Tophat and Minor Program Vehicle Launches',
-                    'Volume Contribution of Launched Vehicles (New, Tophat, Minor)',
-                    'Annual Volume Plan',
-                    'Monthly Forecasting',
-                    'US SAAR'
                 ]
             }
         ]

@@ -20,10 +20,24 @@ export interface DriverTreeNode {
     children?: DriverTreeNode[];
 }
 
+export interface AccountingFactRecord {
+    driverId: string;
+    productId?: string;
+    period: string;
+    accountedAmount: number;
+}
+
+export interface ProductDIMRecord {
+    productId: string;
+    productSegment: string;
+}
+
 export interface ExcelDriverTreeData {
     tree: DriverTreeNode[];
     accountingFacts: Map<string, PeriodData[]>;
     rateFacts: Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>;
+    accountingFactRecords?: AccountingFactRecord[]; // Full records with Product ID
+    productDIM?: Map<string, ProductDIMRecord>; // Map of Product ID to Product DIM record
 }
 
 /**
@@ -67,6 +81,9 @@ export async function parseDriverTreeExcel(file: File): Promise<ExcelDriverTreeD
                 // Parse Accounting Fact tab
                 const accountingSheet = workbook.Sheets['Accounting Fact'] || workbook.Sheets[workbook.SheetNames.find((name: string) => name.toLowerCase().includes('accounting')) || ''];
                 
+                // Parse Product DIM tab
+                const productDIMSheet = workbook.Sheets['Product DIM'] || workbook.Sheets[workbook.SheetNames.find((name: string) => name.toLowerCase().includes('product dim') || name.toLowerCase().includes('product_dim')) || ''];
+                
                 // Parse Fee Rate Fact tab (preferred) or Rate Fact tab
                 const feeRateFactSheet = workbook.Sheets['Fee Rate Fact'] || workbook.Sheets[workbook.SheetNames.find((name: string) => name.toLowerCase().includes('fee rate')) || ''];
                 const rateFactSheet = workbook.Sheets['Rate Fact'] || workbook.Sheets[workbook.SheetNames.find((name: string) => name.toLowerCase().includes('rate fact') && !name.toLowerCase().includes('fee')) || ''];
@@ -75,7 +92,10 @@ export async function parseDriverTreeExcel(file: File): Promise<ExcelDriverTreeD
                 const tree = parseDriverTreeSheet(driverTreeSheet, XLSX);
                 
                 // Extract accounting facts - look for 'Accounted Amount' column specifically
-                const accountingFacts = accountingSheet ? parseAccountingFactSheet(accountingSheet, XLSX) : new Map<string, PeriodData[]>();
+                const { accountingFacts, accountingFactRecords } = accountingSheet ? parseAccountingFactSheet(accountingSheet, XLSX) : { accountingFacts: new Map<string, PeriodData[]>(), accountingFactRecords: [] };
+                
+                // Extract Product DIM
+                const productDIM = productDIMSheet ? parseProductDIMSheet(productDIMSheet, XLSX) : new Map<string, ProductDIMRecord>();
                 
                 // Extract rate facts - try Fee Rate Fact first, then Rate Fact
                 let rateFacts: Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>;
@@ -93,7 +113,9 @@ export async function parseDriverTreeExcel(file: File): Promise<ExcelDriverTreeD
                 resolve({
                     tree,
                     accountingFacts,
-                    rateFacts
+                    rateFacts,
+                    accountingFactRecords,
+                    productDIM
                 });
             } catch (error) {
                 reject(error);
@@ -277,25 +299,36 @@ function parseHierarchicalColumn(data: any[][]): DriverTreeNode[] {
  * Parse Accounting Fact sheet - handles both formats:
  * 1. Multiple period columns (old format)
  * 2. Single Period column + Accounted Amount column (new format)
+ * Also captures Product ID if present
  */
-function parseAccountingFactSheet(sheet: any, XLSX: any): Map<string, PeriodData[]> {
+function parseAccountingFactSheet(sheet: any, XLSX: any): { accountingFacts: Map<string, PeriodData[]>; accountingFactRecords: AccountingFactRecord[] } {
     const facts = new Map<string, PeriodData[]>();
+    const records: AccountingFactRecord[] = [];
     const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
 
     if (!jsonData || jsonData.length === 0) {
-        return facts;
+        return { accountingFacts: facts, accountingFactRecords: records };
     }
 
     const headerRow = jsonData[0] as any[];
     let idColumnIndex = -1;
+    let productIdColumnIndex = -1;
     let periodColumnIndex = -1;
     let accountedAmountColumnIndex = -1;
 
-    // Find identifier column
+    // Find identifier column (Driver ID)
     headerRow.forEach((header, index) => {
         const headerStr = String(header).toLowerCase().trim();
-        if (headerStr.includes('id') || headerStr.includes('name') || headerStr.includes('driver') || headerStr.includes('node')) {
+        if ((headerStr.includes('id') || headerStr.includes('name') || headerStr.includes('driver') || headerStr.includes('node')) && !headerStr.includes('product')) {
             if (idColumnIndex === -1) idColumnIndex = index;
+        }
+    });
+
+    // Find Product ID column
+    headerRow.forEach((header, index) => {
+        const headerStr = String(header).toLowerCase().trim();
+        if (headerStr.includes('product') && headerStr.includes('id')) {
+            if (productIdColumnIndex === -1) productIdColumnIndex = index;
         }
     });
 
@@ -322,13 +355,42 @@ function parseAccountingFactSheet(sheet: any, XLSX: any): Map<string, PeriodData
             if (!row || row.length === 0) continue;
 
             const id = row[idColumnIndex];
+            const productId = productIdColumnIndex >= 0 ? row[productIdColumnIndex] : undefined;
             const periodValue = row[periodColumnIndex];
             const amountValue = row[accountedAmountColumnIndex];
 
             if (!id || !periodValue || amountValue === undefined || amountValue === null || amountValue === '') continue;
 
             const idStr = String(id).trim();
-            const periodStr = String(periodValue).trim();
+            // Handle period value - if it's a number, it might be an Excel serial date
+            let periodStr: string;
+            if (typeof periodValue === 'number') {
+                // Check if it's a reasonable Excel serial date (1 to ~50000)
+                if (periodValue >= 1 && periodValue <= 100000) {
+                    // Convert Excel serial date to date string
+                    // Excel serial 1 = Jan 1, 1900
+                    // Excel incorrectly treats 1900 as a leap year (it wasn't)
+                    // Standard conversion: Excel epoch is Jan 1, 1900, but we use Dec 30, 1899
+                    // and add (serial - 1) days, then add 1 day to account for the leap year bug
+                    // Actually, the correct formula is: Dec 30, 1899 + serial days
+                    const excelEpoch = new Date(1899, 11, 30); // Dec 30, 1899
+                    const date = new Date(excelEpoch.getTime() + periodValue * 24 * 60 * 60 * 1000);
+                    if (!isNaN(date.getTime())) {
+                        // Format as YYYY-MM-DD
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        periodStr = `${year}-${month}-${day}`;
+                    } else {
+                        periodStr = String(periodValue).trim();
+                    }
+                } else {
+                    periodStr = String(periodValue).trim();
+                }
+            } else {
+                periodStr = String(periodValue).trim();
+            }
+            const productIdStr = productId ? String(productId).trim() : undefined;
             
             const amountNum = typeof amountValue === 'number' ? amountValue : parseFloat(String(amountValue).replace(/[^0-9.-]/g, ''));
             if (isNaN(amountNum)) continue;
@@ -341,6 +403,14 @@ function parseAccountingFactSheet(sheet: any, XLSX: any): Map<string, PeriodData
                 value: amountNum,
                 period: periodStr
             });
+
+            // Store full record with Product ID
+            records.push({
+                driverId: idStr,
+                productId: productIdStr,
+                period: periodStr,
+                accountedAmount: amountNum
+            });
         }
 
         // Convert to the expected format
@@ -350,7 +420,7 @@ function parseAccountingFactSheet(sheet: any, XLSX: any): Map<string, PeriodData
             }
         });
 
-        return facts;
+        return { accountingFacts: facts, accountingFactRecords: records };
     }
 
     // Old format: multiple period columns
@@ -384,9 +454,11 @@ function parseAccountingFactSheet(sheet: any, XLSX: any): Map<string, PeriodData
         if (!row || row.length === 0) continue;
 
         const id = row[idColumnIndex];
+        const productId = productIdColumnIndex >= 0 ? row[productIdColumnIndex] : undefined;
         if (!id) continue;
 
         const idStr = String(id).trim();
+        const productIdStr = productId ? String(productId).trim() : undefined;
         if (!idStr) continue;
 
         const periods: PeriodData[] = [];
@@ -397,6 +469,13 @@ function parseAccountingFactSheet(sheet: any, XLSX: any): Map<string, PeriodData
                 const valueNum = typeof value === 'number' ? value : parseFloat(String(value).replace(/[^0-9.-]/g, ''));
                 if (!isNaN(valueNum)) {
                     periods.push({ value: valueNum, period });
+                    // Store full record with Product ID
+                    records.push({
+                        driverId: idStr,
+                        productId: productIdStr,
+                        period: period,
+                        accountedAmount: valueNum
+                    });
                 }
             }
         });
@@ -406,7 +485,77 @@ function parseAccountingFactSheet(sheet: any, XLSX: any): Map<string, PeriodData
         }
     }
 
-    return facts;
+    return { accountingFacts: facts, accountingFactRecords: records };
+}
+
+/**
+ * Parse Product DIM sheet - extracts Product ID and Product Segment mapping
+ * Expected format: Product ID column + Product Segment column
+ */
+function parseProductDIMSheet(sheet: any, XLSX: any): Map<string, ProductDIMRecord> {
+    const productDIM = new Map<string, ProductDIMRecord>();
+    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+    if (!jsonData || jsonData.length === 0) {
+        return productDIM;
+    }
+
+    const headerRow = jsonData[0] as any[];
+    let productIdColumnIndex = -1;
+    let productSegmentColumnIndex = -1;
+
+    // Find Product ID column
+    headerRow.forEach((header, index) => {
+        const headerStr = String(header).toLowerCase().trim();
+        if (headerStr.includes('product') && headerStr.includes('id')) {
+            if (productIdColumnIndex === -1) productIdColumnIndex = index;
+        }
+    });
+
+    // Find Product Segment column
+    headerRow.forEach((header, index) => {
+        const headerStr = String(header).toLowerCase().trim();
+        if (headerStr.includes('product') && headerStr.includes('segment')) {
+            if (productSegmentColumnIndex === -1) productSegmentColumnIndex = index;
+        }
+    });
+
+    // If Product Segment not found, try alternative names
+    if (productSegmentColumnIndex === -1) {
+        headerRow.forEach((header, index) => {
+            const headerStr = String(header).toLowerCase().trim();
+            if (headerStr.includes('segment') && !headerStr.includes('product')) {
+                if (productSegmentColumnIndex === -1) productSegmentColumnIndex = index;
+            }
+        });
+    }
+
+    // Default to first column if Product ID not found, second column for Product Segment
+    if (productIdColumnIndex === -1) productIdColumnIndex = 0;
+    if (productSegmentColumnIndex === -1) productSegmentColumnIndex = 1;
+
+    // Process data rows
+    for (let i = 1; i < jsonData.length; i++) {
+        const row = jsonData[i] as any[];
+        if (!row || row.length === 0) continue;
+
+        const productId = row[productIdColumnIndex];
+        const productSegment = row[productSegmentColumnIndex];
+
+        if (!productId) continue;
+
+        const productIdStr = String(productId).trim();
+        const productSegmentStr = productSegment ? String(productSegment).trim() : '';
+
+        if (productIdStr) {
+            productDIM.set(productIdStr, {
+                productId: productIdStr,
+                productSegment: productSegmentStr
+            });
+        }
+    }
+
+    return productDIM;
 }
 
 /**

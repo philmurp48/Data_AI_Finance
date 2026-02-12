@@ -15,6 +15,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import ExcelUpload from '@/components/ExcelUpload';
+import ProductMixSummary from '@/components/ProductMixSummary';
 import { ExcelDriverTreeData, DriverTreeNode, PeriodData } from '@/lib/excel-parser';
 
 // Category definitions
@@ -99,7 +100,7 @@ export default function BusinessConsolesPage() {
     const router = useRouter();
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedConsole, setSelectedConsole] = useState('market-demand');
+    const [selectedConsole, setSelectedConsole] = useState('product-mix');
     const [expandedDrivers, setExpandedDrivers] = useState<Set<string>>(new Set()); // Start with everything collapsed
     const [excelData, setExcelData] = useState<ExcelDriverTreeData | null>(null);
     const [whatIfPercentages, setWhatIfPercentages] = useState<Map<string, number>>(new Map());
@@ -123,8 +124,10 @@ export default function BusinessConsolesPage() {
                         setExcelData(restoredData);
                         
                         // Expand to level 3 by default
-                        const expanded = expandToLevel3(restoredData.tree);
-                        setExpandedDrivers(expanded);
+                        if (restoredData.tree && restoredData.tree.length > 0) {
+                            const expanded = expandToLevel3(restoredData.tree);
+                            setExpandedDrivers(expanded);
+                        }
                         
                         return; // Use server data, skip localStorage
                     }
@@ -141,13 +144,17 @@ export default function BusinessConsolesPage() {
                     const restoredData: ExcelDriverTreeData = {
                         tree: parsed.tree || [],
                         accountingFacts: new Map(parsed.accountingFacts || []),
-                        rateFacts: new Map(parsed.rateFacts || []) as Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>
+                        rateFacts: new Map(parsed.rateFacts || []) as Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>,
+                        accountingFactRecords: parsed.accountingFactRecords || [],
+                        productDIM: new Map(parsed.productDIM || [])
                     };
                     setExcelData(restoredData);
                     
                     // Expand to level 3 by default
-                    const expanded = expandToLevel3(restoredData.tree);
-                    setExpandedDrivers(expanded);
+                    if (restoredData.tree && restoredData.tree.length > 0) {
+                        const expanded = expandToLevel3(restoredData.tree);
+                        setExpandedDrivers(expanded);
+                    }
                 }
             } catch (error) {
                 console.error('Failed to load Excel data from localStorage:', error);
@@ -165,7 +172,9 @@ export default function BusinessConsolesPage() {
             const dataToSave = {
                 tree: excelData.tree,
                 accountingFacts: Array.from(excelData.accountingFacts.entries()),
-                rateFacts: Array.from(excelData.rateFacts.entries() as any)
+                rateFacts: Array.from(excelData.rateFacts.entries() as any),
+                accountingFactRecords: excelData.accountingFactRecords || [],
+                productDIM: Array.from((excelData.productDIM || new Map()).entries())
             };
 
             // Save to server (shared across all users)
@@ -189,19 +198,28 @@ export default function BusinessConsolesPage() {
         }
     }, [excelData]);
 
-    // Expand all nodes up to level 3
+    // Expand all nodes up to level 3 (so Level 3 nodes are visible and expanded, Level 4+ are collapsed)
     const expandToLevel3 = (nodes: DriverTreeNode[], parentIndex: string = '', expandedSet: Set<string> = new Set()): Set<string> => {
-        nodes.forEach((node) => {
-            const nodeIndex = parentIndex ? `${parentIndex}-${node.id}` : node.id;
+        if (!nodes || nodes.length === 0) {
+            return expandedSet;
+        }
+        
+        nodes.forEach((node, index) => {
+            // For root nodes, use index-based identifier; for nested nodes, use parent path
+            const nodeIndex = parentIndex 
+                ? `${parentIndex}-${node.id}` 
+                : `root-${index}-${node.id}`;
             
-            // Expand if level is 3 or less
-            if (node.level <= 3) {
+            // Expand if level is 3 or less - this makes Level 1, 2, and 3 visible and expanded
+            // Level 4 nodes will be visible (because their parent Level 3 is expanded) but collapsed
+            if (node.level && node.level <= 3) {
                 expandedSet.add(nodeIndex);
-                
-                // Recursively expand children
-                if (node.children && node.children.length > 0) {
-                    expandToLevel3(node.children, nodeIndex, expandedSet);
-                }
+            }
+            
+            // Always recursively process children to ensure all nodes are in the tree structure
+            // Children with level > 3 won't be expanded, but will be visible if their parent is expanded
+            if (node.children && node.children.length > 0) {
+                expandToLevel3(node.children, nodeIndex, expandedSet);
             }
         });
         
@@ -216,8 +234,10 @@ export default function BusinessConsolesPage() {
         setWhatIfResults(new Map());
         
         // Expand to level 3 by default
-        const expanded = expandToLevel3(data.tree);
-        setExpandedDrivers(expanded);
+        if (data.tree && data.tree.length > 0) {
+            const expanded = expandToLevel3(data.tree);
+            setExpandedDrivers(expanded);
+        }
     };
 
     // Filter consoles based on category and search
@@ -529,8 +549,10 @@ export default function BusinessConsolesPage() {
     };
 
     // Render Excel-based driver tree node
-    const renderExcelDriverNode = (node: DriverTreeNode, depth: number = 0, parentIndex: string = '') => {
-        const nodeIndex = parentIndex ? `${parentIndex}-${node.id}` : node.id;
+    const renderExcelDriverNode = (node: DriverTreeNode, depth: number = 0, parentIndex: string = '', rootIndex: number = 0) => {
+        const nodeIndex = parentIndex 
+            ? `${parentIndex}-${node.id}` 
+            : `root-${rootIndex}-${node.id}`;
         const isExpanded = expandedDrivers.has(nodeIndex);
         const hasChildren = node.children && node.children.length > 0;
         
@@ -603,7 +625,7 @@ export default function BusinessConsolesPage() {
                     {/* Render children when expanded */}
                     {isExpanded && hasChildren && (
                         <div className="mt-2 space-y-1">
-                            {node.children!.map((child) => renderExcelDriverNode(child, depth + 1, nodeIndex))}
+                            {node.children!.map((child) => renderExcelDriverNode(child, depth + 1, nodeIndex, rootIndex))}
                         </div>
                     )}
                 </div>
@@ -619,7 +641,7 @@ export default function BusinessConsolesPage() {
         if (excelData && excelData.tree.length > 0) {
             return (
                 <div className="space-y-2">
-                    {excelData.tree.map((rootNode, index) => renderExcelDriverNode(rootNode, 0, `root-${index}`))}
+                    {excelData.tree.map((rootNode, index) => renderExcelDriverNode(rootNode, 0, '', index))}
                 </div>
             );
         }
@@ -891,30 +913,39 @@ export default function BusinessConsolesPage() {
                                                     </div>
                                                 </div>
 
-                                                {/* Metrics - More compact */}
-                                                <div className="grid grid-cols-2 gap-3">
-                                                    {console.metrics.map((metric) => (
-                                                        <div key={metric.label} className={`${isSelected ? 'bg-white/10' : 'bg-white'} rounded-lg px-3 py-2`}>
-                                                            <p className={`text-xs ${isSelected ? 'text-cyan-200' : 'text-gray-500'}`}>
-                                                                {metric.label}
-                                                            </p>
-                                                            <div className="flex items-baseline space-x-2 mt-0.5">
-                                                                <p className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
-                                                                    {metric.value}
+                                                {/* Metrics - More compact - Only show if there are metrics */}
+                                                {console.metrics.length > 0 && (
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        {console.metrics.map((metric) => (
+                                                            <div key={metric.label} className={`${isSelected ? 'bg-white/10' : 'bg-white'} rounded-lg px-3 py-2`}>
+                                                                <p className={`text-xs ${isSelected ? 'text-cyan-200' : 'text-gray-500'}`}>
+                                                                    {metric.label}
                                                                 </p>
-                                                                <p className={`text-xs flex items-center ${metric.trend === 'up' ? (isSelected ? 'text-green-400' : 'text-green-600') :
-                                                                    metric.trend === 'down' ? (isSelected ? 'text-red-400' : 'text-red-600') :
-                                                                        (isSelected ? 'text-gray-300' : 'text-gray-400')
-                                                                    }`}>
-                                                                    {metric.trend === 'up' && '↑'}
-                                                                    {metric.trend === 'down' && '↓'}
-                                                                    {metric.trend === 'stable' && '→'}
-                                                                    {metric.change > 0 ? '+' : ''}{metric.change}%
-                                                                </p>
+                                                                <div className="flex items-baseline space-x-2 mt-0.5">
+                                                                    <p className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
+                                                                        {metric.value}
+                                                                    </p>
+                                                                    <p className={`text-xs flex items-center ${metric.trend === 'up' ? (isSelected ? 'text-green-400' : 'text-green-600') :
+                                                                        metric.trend === 'down' ? (isSelected ? 'text-red-400' : 'text-red-600') :
+                                                                            (isSelected ? 'text-gray-300' : 'text-gray-400')
+                                                                        }`}>
+                                                                        {metric.trend === 'up' && '↑'}
+                                                                        {metric.trend === 'down' && '↓'}
+                                                                        {metric.trend === 'stable' && '→'}
+                                                                        {metric.change > 0 ? '+' : ''}{metric.change}%
+                                                                    </p>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {/* Product Mix Summary - Auto show for Product Mix console */}
+                                                {console.id === 'product-mix' && (
+                                                    <div className="mt-4">
+                                                        <ProductMixSummary excelData={excelData} />
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </motion.div>
