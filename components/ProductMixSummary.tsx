@@ -220,7 +220,7 @@ export default function ProductMixSummary({ excelData }: ProductMixSummaryProps)
             }
 
             // Join with Product DIM to get Product Segment
-            if (record.productId) {
+            if (record.productId && excelData.productDIM) {
                 const productDIM = excelData.productDIM.get(record.productId);
                 if (productDIM && productDIM.productSegment) {
                     const segment = productDIM.productSegment;
