@@ -119,7 +119,9 @@ export default function BusinessConsolesPage() {
                         const restoredData: ExcelDriverTreeData = {
                             tree: parsed.tree || [],
                             accountingFacts: new Map(parsed.accountingFacts || []),
-                            rateFacts: new Map(parsed.rateFacts || []) as Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>
+                            rateFacts: new Map(parsed.rateFacts || []) as Map<string, PeriodData[]> | Map<string, { feeRate: PeriodData[]; rawAmount: PeriodData[]; accountedAmount: PeriodData[] }>,
+                            accountingFactRecords: parsed.accountingFactRecords || [],
+                            productDIM: new Map(parsed.productDIM || [])
                         };
                         setExcelData(restoredData);
                         
